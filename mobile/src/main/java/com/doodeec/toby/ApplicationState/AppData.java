@@ -15,8 +15,6 @@ import com.doodeec.toby.Storage.ShopDBEntry;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Holds data objects in one application run
@@ -46,7 +44,7 @@ public class AppData {
         AppData appData = new AppData();
 
         // set database observers
-        appData.allShops.addObserver(new Observer() {
+        /*appData.allShops.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
@@ -75,7 +73,7 @@ public class AppData {
                 }
                 database.close();
             }
-        });
+        });*/
 
         return appData;
     }

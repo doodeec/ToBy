@@ -7,12 +7,12 @@ import android.util.Log;
 
 import com.doodeec.toby.Storage.ListItemDBEntry;
 
-import java.io.Serializable;
-
 /**
  * Created by Dusan Bartos on 12.1.2015.
  */
-public class ShoppingListItem implements Serializable {
+public class ShoppingListItem {
+
+    //TODO implements dbSavable
 
     private Integer id;
     private String name;

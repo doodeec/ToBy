@@ -54,6 +54,10 @@ public class ShoppingList implements DbSavable {
                 cursor.getColumnIndex(ShoppingListDBEntry.COL_completed_date)));
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void setId(int id) {
         this.id = id;

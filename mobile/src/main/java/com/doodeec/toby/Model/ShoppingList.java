@@ -2,9 +2,8 @@ package com.doodeec.toby.Model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
+import com.doodeec.toby.ApplicationState.AppData;
 import com.doodeec.toby.Storage.ShoppingListDBEntry;
 
 import java.util.ArrayList;
@@ -12,13 +11,15 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * Created by Dusan Bartos on 14.1.2015.
+ * Shopping list object
+ *
+ * @author Dusan Bartos
  */
-public class ShoppingList {
+public class ShoppingList implements DbSavable {
 
     private Integer id;
     private ShopCategory category;
-    private Shop shopId;
+    private Shop shop;
     private String name;
     private Boolean completed = false;
     private List<ShoppingListItem> items = new ArrayList<>();
@@ -32,36 +33,66 @@ public class ShoppingList {
     }
 
     public ShoppingList(Cursor cursor) {
+        AppData appData = AppData.getInstance();
+
         this.name = cursor.getString(cursor.getColumnIndex(ShoppingListDBEntry.COL_name));
         this.id = cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_id));
+        this.category = appData.getCategoryById(
+                cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_categoryId)));
+        this.shop = appData.getShopById(
+                cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_shopId)));
+        this.completed = cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_id)) == 1;
+        this.items = deserializeItems(
+                cursor.getString(cursor.getColumnIndex(ShoppingListDBEntry.COL_items)));
+        this.created = new Date(cursor.getLong(
+                cursor.getColumnIndex(ShoppingListDBEntry.COL_created)));
+        this.edited = new Date(cursor.getLong(
+                cursor.getColumnIndex(ShoppingListDBEntry.COL_edited)));
+        this.dueDate = new Date(cursor.getLong(
+                cursor.getColumnIndex(ShoppingListDBEntry.COL_due_date)));
+        this.dateCompleted = new Date(cursor.getLong(
+                cursor.getColumnIndex(ShoppingListDBEntry.COL_completed_date)));
     }
 
-    public long saveToDb(SQLiteDatabase db) {
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShoppingListDBEntry.COL_id, id);
         values.put(ShoppingListDBEntry.COL_name, name);
+        values.put(ShoppingListDBEntry.COL_categoryId, category.getId());
+        values.put(ShoppingListDBEntry.COL_shopId, shop.getId());
+        values.put(ShoppingListDBEntry.COL_completed, completed ? 1 : 0);
+        values.put(ShoppingListDBEntry.COL_items, serializeItems(items));
+        values.put(ShoppingListDBEntry.COL_created, created.getTime());
+        values.put(ShoppingListDBEntry.COL_edited, edited.getTime());
+        values.put(ShoppingListDBEntry.COL_due_date, dueDate.getTime());
+        values.put(ShoppingListDBEntry.COL_completed_date, dateCompleted.getTime());
+        return values;
+    }
 
-        long newRowId = -1;
-        String[] column = {ShoppingListDBEntry.COL_id};
-        String[] args = {String.valueOf(id)};
+    @Override
+    public String getTableName() {
+        return ShoppingListDBEntry.TABLE_NAME;
+    }
 
-        Cursor c = db.query(ShoppingListDBEntry.TABLE_NAME, column, "id = ?", args, null, null, null);
+    private static String serializeItems(List<ShoppingListItem> items) {
+        //TODO fill string
+        return "";
+    }
 
-        if (c.moveToFirst() && id != null) {
-            newRowId = db.update(ShoppingListDBEntry.TABLE_NAME, values, "id = ?", args);
-
-            if (newRowId == 0) {
-                newRowId = -1;
-            }
-
-            Log.d("TOBY", "Update shopping list with id: " + args[0]);
-        } else {
-            newRowId = db.insert(ShoppingListDBEntry.TABLE_NAME, null, values);
-            id = (int) newRowId;
-
-            Log.d("TOBY", "Inserted shopping list newRowId: " + newRowId);
-        }
-        c.close();
-        return newRowId;
+    private static List<ShoppingListItem> deserializeItems(String serializedItems) {
+        List<ShoppingListItem> items = new ArrayList<>();
+        //TODO fill list
+        return items;
     }
 }

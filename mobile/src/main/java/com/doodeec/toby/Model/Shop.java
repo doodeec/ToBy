@@ -2,16 +2,16 @@ package com.doodeec.toby.Model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.doodeec.toby.ApplicationState.AppData;
 import com.doodeec.toby.Storage.ShopDBEntry;
 
 /**
- * Created by Dusan Bartos on 14.1.2015.
+ * Shop object
+ *
+ * @author Dusan Bartos
  */
-public class Shop {
+public class Shop implements DbSavable {
 
     private Integer id;
     private String name;
@@ -33,33 +33,27 @@ public class Shop {
                 cursor.getColumnIndex(ShopDBEntry.COL_category)));
     }
 
-    public long saveToDb(SQLiteDatabase db) {
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
+    public Integer getId() {
+        return id;
+    }
+
+    @Override
+    public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShopDBEntry.COL_id, id);
         values.put(ShopDBEntry.COL_name, name);
         values.put(ShopDBEntry.COL_category, category.getId());
+        return values;
+    }
 
-        long newRowId = -1;
-        String[] column = {ShopDBEntry.COL_id};
-        String[] args = {String.valueOf(id)};
-
-        Cursor c = db.query(ShopDBEntry.TABLE_NAME, column, "id = ?", args, null, null, null);
-
-        if (c.moveToFirst() && id != null) {
-            newRowId = db.update(ShopDBEntry.TABLE_NAME, values, "id = ?", args);
-
-            if (newRowId == 0) {
-                newRowId = -1;
-            }
-
-            Log.d("TOBY", "Update shop with id: " + args[0]);
-        } else {
-            newRowId = db.insert(ShopDBEntry.TABLE_NAME, null, values);
-            this.id = (int) newRowId;
-
-            Log.d("TOBY", "Inserted shop: " + newRowId);
-        }
-        c.close();
-        return newRowId;
+    @Override
+    public String getTableName() {
+        return ShopDBEntry.TABLE_NAME;
     }
 }

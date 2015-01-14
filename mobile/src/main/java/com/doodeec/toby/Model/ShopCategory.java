@@ -2,15 +2,15 @@ package com.doodeec.toby.Model;
 
 import android.content.ContentValues;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import com.doodeec.toby.Storage.ShopCategoryDBEntry;
 
 /**
- * Created by Dusan Bartos on 14.1.2015.
+ * Shop Category object
+ *
+ * @author Dusan Bartos
  */
-public class ShopCategory {
+public class ShopCategory implements DbSavable {
 
     private Integer id;
     private String name;
@@ -27,42 +27,27 @@ public class ShopCategory {
         this.usage = cursor.getInt(cursor.getColumnIndex(ShopCategoryDBEntry.COL_usage));
     }
 
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public Integer getId() {
         return id;
     }
 
-    /**
-     * Saves object to the SQLite DB
-     * @param db database instance
-     * @return row id
-     */
-    public long saveToDb(SQLiteDatabase db) {
+    @Override
+    public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShopCategoryDBEntry.COL_id, id);
         values.put(ShopCategoryDBEntry.COL_name, name);
         values.put(ShopCategoryDBEntry.COL_usage, usage);
+        return values;
+    }
 
-        long newRowId = -1;
-        String[] column = {ShopCategoryDBEntry.COL_id};
-        String[] args = {String.valueOf(id)};
-
-        Cursor c = db.query(ShopCategoryDBEntry.TABLE_NAME, column, "id = ?", args, null, null, null);
-
-        if (c.moveToFirst() && id != null) {
-            newRowId = db.update(ShopCategoryDBEntry.TABLE_NAME, values, "id = ?", args);
-
-            if (newRowId == 0) {
-                newRowId = -1;
-            }
-
-            Log.d("TOBY", "Update shop category with id: " + args[0]);
-        } else {
-            newRowId = db.insert(ShopCategoryDBEntry.TABLE_NAME, null, values);
-            this.id = (int) newRowId;
-
-            Log.d("TOBY", "Inserted shop category: " + newRowId);
-        }
-        c.close();
-        return newRowId;
+    @Override
+    public String getTableName() {
+        return ShopCategoryDBEntry.TABLE_NAME;
     }
 }

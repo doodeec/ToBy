@@ -1,9 +1,12 @@
 package com.doodeec.toby.ApplicationState;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.doodeec.toby.Model.BaseObservable;
+import com.doodeec.toby.Model.DbSavable;
 import com.doodeec.toby.Model.Shop;
 import com.doodeec.toby.Model.ShopCategory;
 import com.doodeec.toby.Model.ShoppingList;
@@ -48,7 +51,7 @@ public class AppData {
             public void update(Observable observable, Object data) {
                 SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
                 for (Shop shop : instance.allShops.getData()) {
-                    shop.saveToDb(database);
+                    instance.saveObjectToDB(database, shop);
                 }
                 database.close();
             }
@@ -58,7 +61,7 @@ public class AppData {
             public void update(Observable observable, Object data) {
                 SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
                 for (ShoppingList list : instance.allShoppingLists.getData()) {
-                    list.saveToDb(database);
+                    instance.saveObjectToDB(database, list);
                 }
                 database.close();
             }
@@ -67,8 +70,8 @@ public class AppData {
             @Override
             public void update(Observable observable, Object data) {
                 SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                for (ShopCategory shop : instance.allCategories.getData()) {
-                    shop.saveToDb(database);
+                for (ShopCategory category : instance.allCategories.getData()) {
+                    instance.saveObjectToDB(database, category);
                 }
                 database.close();
             }
@@ -158,10 +161,40 @@ public class AppData {
     }
 
     public ShopCategory getCategoryById(int id) {
-        for (ShopCategory category: getCategories()) {
+        for (ShopCategory category : getCategories()) {
             if (category.getId() == id) return category;
         }
 
         return null;
+    }
+
+    public Shop getShopById(int id) {
+        for (Shop shop : getShops()) {
+            if (shop.getId() == id) return shop;
+        }
+
+        return null;
+    }
+
+    private void saveObjectToDB(SQLiteDatabase db, DbSavable object) {
+        ContentValues values = object.getValues();
+
+        long newRowId = -1;
+        String[] column = {DbSavable.id_column};
+        String[] args = {String.valueOf(object.getId())};
+
+        Cursor c = db.query(object.getTableName(), column, "id = ?", args, null, null, null);
+
+        if (c.moveToFirst() && object.getId() != null) {
+            db.update(object.getTableName(), values, "id = ?", args);
+
+            Log.d("TOBY", "Update object " + object.getClass().getSimpleName() + " with id: " + args[0]);
+        } else {
+            newRowId = db.insert(object.getTableName(), null, values);
+            object.setId((int) newRowId);
+
+            Log.d("TOBY", "Inserted " + object.getClass().getSimpleName() + ": " + newRowId);
+        }
+        c.close();
     }
 }

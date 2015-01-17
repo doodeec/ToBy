@@ -1,11 +1,14 @@
 package com.doodeec.toby;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
-import com.doodeec.toby.Presentation.ShoppingListsListFragment;
+import com.doodeec.toby.Presentation.ShoppingItem.ShoppingItemListActivity;
+import com.doodeec.toby.Presentation.ShoppingList.ShoppingListListActivity;
 
 public class MainActivity extends ActionBarActivity {
 
@@ -14,11 +17,21 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        ShoppingListsListFragment fabFragment = new ShoppingListsListFragment();
+        findViewById(R.id.show_items).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ShoppingItemListActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, fabFragment, ShoppingListsListFragment.TAG)
-                .commit();
+        findViewById(R.id.show_lists).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ShoppingListListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

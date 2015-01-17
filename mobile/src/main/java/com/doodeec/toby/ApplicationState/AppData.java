@@ -10,8 +10,12 @@ import com.doodeec.toby.Model.DbSavable;
 import com.doodeec.toby.Model.Shop;
 import com.doodeec.toby.Model.ShopCategory;
 import com.doodeec.toby.Model.ShoppingList;
+import com.doodeec.toby.Model.ShoppingListItem;
 import com.doodeec.toby.Storage.DBHelper;
+import com.doodeec.toby.Storage.ListItemDBEntry;
+import com.doodeec.toby.Storage.ShopCategoryDBEntry;
 import com.doodeec.toby.Storage.ShopDBEntry;
+import com.doodeec.toby.Storage.ShoppingListDBEntry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,17 +86,38 @@ public class AppData {
     private BaseObservable<Shop> allShops = new BaseObservable<>();
     private BaseObservable<ShopCategory> allCategories = new BaseObservable<>();
     private BaseObservable<ShoppingList> allShoppingLists = new BaseObservable<>();
+    private BaseObservable<ShoppingListItem> allShoppingListItems = new BaseObservable<>();
 
     public void setShops(List<Shop> shops) {
         this.allShops.updateData(shops);
+    }
+
+    public void addShop(Shop shop) {
+        this.allShops.addSingleItem(shop);
     }
 
     public void setCategories(List<ShopCategory> categories) {
         this.allCategories.updateData(categories);
     }
 
+    public void addCategory(ShopCategory category) {
+        this.allCategories.addSingleItem(category);
+    }
+
     public void setShoppingLists(List<ShoppingList> shoppingLists) {
         this.allShoppingLists.updateData(shoppingLists);
+    }
+
+    public void addShoppingList(ShoppingList shoppingList) {
+        this.allShoppingLists.addSingleItem(shoppingList);
+    }
+
+    public void setShoppingListItems(List<ShoppingListItem> listItems) {
+        this.allShoppingListItems.updateData(listItems);
+    }
+
+    public void addShoppingListItem(ShoppingListItem shoppingListItem) {
+        this.allShoppingListItems.addSingleItem(shoppingListItem);
     }
 
     public List<Shop> getShops() {
@@ -122,7 +147,7 @@ public class AppData {
             List<ShopCategory> categories = new ArrayList<>();
 
             try {
-                Cursor cursor = db.query(ShopDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
 
                 while (cursor.moveToNext()) {
                     categories.add(new ShopCategory(cursor));
@@ -143,7 +168,7 @@ public class AppData {
             List<ShoppingList> shoppingLists = new ArrayList<>();
 
             try {
-                Cursor cursor = db.query(ShopDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                Cursor cursor = db.query(ShoppingListDBEntry.TABLE_NAME, null, null, null, null, null, null);
 
                 while (cursor.moveToNext()) {
                     shoppingLists.add(new ShoppingList(cursor));
@@ -156,6 +181,27 @@ public class AppData {
         }
 
         return allShoppingLists.getData();
+    }
+
+    public List<ShoppingListItem> getShoppingListItems() {
+        if (allShoppingListItems.getData() == null) {
+            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+            List<ShoppingListItem> shoppingListItems = new ArrayList<>();
+
+            try {
+                Cursor cursor = db.query(ListItemDBEntry.TABLE_NAME, null, null, null, null, null, null);
+
+                while (cursor.moveToNext()) {
+                    shoppingListItems.add(new ShoppingListItem(cursor));
+                }
+
+                allShoppingListItems.setData(shoppingListItems);
+            } finally {
+                db.close();
+            }
+        }
+
+        return allShoppingListItems.getData();
     }
 
     public ShopCategory getCategoryById(int id) {

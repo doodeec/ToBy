@@ -1,4 +1,4 @@
-package com.doodeec.toby.Presentation;
+package com.doodeec.toby.Presentation.ShoppingList;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;

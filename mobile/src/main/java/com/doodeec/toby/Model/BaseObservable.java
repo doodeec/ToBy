@@ -1,5 +1,6 @@
 package com.doodeec.toby.Model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 
@@ -36,6 +37,28 @@ public class BaseObservable<DataObject> extends Observable {
         notifyObservers();
     }
 
+    /**
+     * Adds single item to the data list and notifies observers
+     *
+     * @param item item
+     */
+    public void addSingleItem(DataObject item) {
+        if (dataList == null) {
+            dataList = new ArrayList<>();
+        }
+
+        if (!this.dataList.contains(item)) {
+            this.dataList.add(item);
+            setChanged();
+            notifyObservers();
+        }
+    }
+
+    /**
+     * Gets data list from the Observable
+     *
+     * @return list of data
+     */
     public List<DataObject> getData() {
         return dataList;
     }

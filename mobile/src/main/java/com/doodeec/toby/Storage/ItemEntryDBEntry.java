@@ -6,7 +6,7 @@ package com.doodeec.toby.Storage;
  * properties:
  * {id} - identifier {@link java.lang.Integer}
  * {amount} - amount of item units {@link java.lang.Float}
- * {unit} - string representation of Unit enum {@link com.doodeec.toby.Model.UnitType}
+ * {unit} - string representation of Unit enum {@link com.doodeec.tobycommon.model.UnitType}
  *
  * @author Dusan Bartos
  */

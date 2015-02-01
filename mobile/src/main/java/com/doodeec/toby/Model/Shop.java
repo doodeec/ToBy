@@ -11,17 +11,15 @@ import com.doodeec.toby.Storage.ShopDBEntry;
  *
  * @author Dusan Bartos
  */
-public class Shop implements DbSavable {
-
-    private Integer id;
-    private String name;
-    private ShopCategory category;
+public class Shop extends com.doodeec.tobycommon.model.Shop implements DbSavable {
 
     public Shop(String name) {
+        super(name);
         this.name = name;
     }
 
-    public Shop(String name, ShopCategory category) {
+    public Shop(String name, com.doodeec.tobycommon.model.ShopCategory category) {
+        super(name, category);
         this.name = name;
         this.category = category;
     }
@@ -36,11 +34,6 @@ public class Shop implements DbSavable {
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     @Override

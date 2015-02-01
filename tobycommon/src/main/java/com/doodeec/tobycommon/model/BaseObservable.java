@@ -1,4 +1,4 @@
-package com.doodeec.toby.Model;
+package com.doodeec.tobycommon.model;
 
 import java.util.ArrayList;
 import java.util.List;

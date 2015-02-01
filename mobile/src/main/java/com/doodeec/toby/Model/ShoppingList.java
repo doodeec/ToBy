@@ -6,33 +6,23 @@ import android.database.Cursor;
 import com.doodeec.toby.ApplicationState.AppData;
 import com.doodeec.toby.Storage.ShoppingListDBEntry;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Shopping list object
  *
  * @author Dusan Bartos
  */
-public class ShoppingList implements DbSavable {
-
-    private Integer id;
-    private ShopCategory category;
-    private Shop shop;
-    private String name;
-    private Boolean completed = false;
-    private List<ShoppingListItem> items = new ArrayList<>();
-    private Date created;
-    private Date edited;
-    private Date dueDate;
-    private Date dateCompleted;
+public class ShoppingList extends com.doodeec.tobycommon.model.ShoppingList implements DbSavable {
 
     public ShoppingList(String name) {
+        super(name);
         this.name = name;
     }
 
     public ShoppingList(Cursor cursor) {
+        super();
+
         AppData appData = AppData.getInstance();
 
         this.name = cursor.getString(cursor.getColumnIndex(ShoppingListDBEntry.COL_name));
@@ -54,18 +44,9 @@ public class ShoppingList implements DbSavable {
                 cursor.getColumnIndex(ShoppingListDBEntry.COL_completed_date)));
     }
 
-    public String getName() {
-        return name;
-    }
-
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     @Override
@@ -87,16 +68,5 @@ public class ShoppingList implements DbSavable {
     @Override
     public String getTableName() {
         return ShoppingListDBEntry.TABLE_NAME;
-    }
-
-    private static String serializeItems(List<ShoppingListItem> items) {
-        //TODO fill string
-        return "";
-    }
-
-    private static List<ShoppingListItem> deserializeItems(String serializedItems) {
-        List<ShoppingListItem> items = new ArrayList<>();
-        //TODO fill list
-        return items;
     }
 }

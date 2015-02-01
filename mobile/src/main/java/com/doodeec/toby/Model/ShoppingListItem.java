@@ -8,27 +8,17 @@ import com.doodeec.toby.Storage.ListItemDBEntry;
 /**
  * Created by Dusan Bartos on 12.1.2015.
  */
-public class ShoppingListItem implements DbSavable {
-
-    private Integer id;
-    private String name;
+public class ShoppingListItem extends com.doodeec.tobycommon.model.ShoppingListItem implements DbSavable {
 
     public ShoppingListItem(String name) {
+        super(name);
         this.name = name;
     }
 
     public ShoppingListItem(Cursor cursor) {
+        super();
         this.name = cursor.getString(cursor.getColumnIndex(ListItemDBEntry.COL_name));
         this.id = cursor.getInt(cursor.getColumnIndex(ListItemDBEntry.COL_id));
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     @Override

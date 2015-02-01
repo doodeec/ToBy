@@ -5,7 +5,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.doodeec.toby.Model.BaseObservable;
 import com.doodeec.toby.Model.DbSavable;
 import com.doodeec.toby.Model.Shop;
 import com.doodeec.toby.Model.ShopCategory;
@@ -16,6 +15,7 @@ import com.doodeec.toby.Storage.ListItemDBEntry;
 import com.doodeec.toby.Storage.ShopCategoryDBEntry;
 import com.doodeec.toby.Storage.ShopDBEntry;
 import com.doodeec.toby.Storage.ShoppingListDBEntry;
+import com.doodeec.tobycommon.model.BaseObservable;
 
 import java.util.ArrayList;
 import java.util.List;

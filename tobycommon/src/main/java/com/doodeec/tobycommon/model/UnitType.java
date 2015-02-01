@@ -1,4 +1,4 @@
-package com.doodeec.toby.Model;
+package com.doodeec.tobycommon.model;
 
 /**
  * Enum for expressing amount of shopping list items

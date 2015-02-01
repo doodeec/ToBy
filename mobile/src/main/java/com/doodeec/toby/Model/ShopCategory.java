@@ -10,18 +10,15 @@ import com.doodeec.toby.Storage.ShopCategoryDBEntry;
  *
  * @author Dusan Bartos
  */
-public class ShopCategory implements DbSavable {
-
-    private Integer id;
-    private String name;
-    private Integer usage;
+public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory implements DbSavable {
 
     public ShopCategory(String name) {
-        this.name = name;
-        this.usage = 0;
+        super(name);
     }
 
     public ShopCategory(Cursor cursor) {
+        super();
+
         this.name = cursor.getString(cursor.getColumnIndex(ShopCategoryDBEntry.COL_name));
         this.id = cursor.getInt(cursor.getColumnIndex(ShopCategoryDBEntry.COL_id));
         this.usage = cursor.getInt(cursor.getColumnIndex(ShopCategoryDBEntry.COL_usage));
@@ -30,11 +27,6 @@ public class ShopCategory implements DbSavable {
     @Override
     public void setId(int id) {
         this.id = id;
-    }
-
-    @Override
-    public Integer getId() {
-        return id;
     }
 
     @Override

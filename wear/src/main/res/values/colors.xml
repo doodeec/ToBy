@@ -3,4 +3,7 @@
     <color name="grey">#777</color>
     <color name="text">#333</color>
     <color name="blue">#ff5570b0</color>
+    <color name="red">#ffff5353</color>
+    <color name="green">#ff4aa738</color>
+    <color name="whiteTransparent">#7fff</color>
 </resources>

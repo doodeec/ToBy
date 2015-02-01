@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.doodeec.toby.WearableListItemLayout
+<com.doodeec.toby.ui.WearableListItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:paddingLeft="@dimen/padding"
-    android:paddingRight="@dimen/padding">
+    android:layout_height="60dp">
 
     <ImageView
         android:id="@+id/circle"
         android:layout_height="20dp"
-        android:layout_margin="16dp"
+        android:layout_marginLeft="@dimen/big_padding"
+        android:layout_marginRight="@dimen/padding"
+        android:layout_marginTop="@dimen/padding"
+        android:layout_marginBottom="@dimen/padding"
         android:layout_width="20dp"
+        android:layout_centerVertical="true"
         android:src="@drawable/wl_circle"/>
 
     <TextView
@@ -24,5 +26,31 @@
         android:lineSpacingExtra="-4sp"
         android:textColor="@color/text"
         android:textSize="16sp"
-        android:text="Johanis a Fred"/>
-</com.doodeec.toby.WearableListItemLayout>
+        android:layout_centerVertical="true"
+        android:text="Johanis a Fred"
+        android:layout_toRightOf="@id/circle"/>
+
+    <RelativeLayout
+        android:id="@+id/action_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:background="@color/whiteTransparent">
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/wl_circle"/>
+
+        <ImageView
+            android:id="@+id/check"
+            android:layout_height="48dp"
+            android:layout_width="48dp"
+            android:layout_marginLeft="@dimen/padding"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/delete"
+            android:src="@drawable/wl_circle"/>
+    </RelativeLayout>
+</com.doodeec.toby.ui.WearableListItemLayout>

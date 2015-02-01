@@ -1,16 +1,18 @@
-package com.doodeec.toby;
+package com.doodeec.toby.detail;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
+import com.doodeec.toby.R;
+import com.doodeec.toby.list.ShoppingListListActivity;
 import com.doodeec.tobycommon.model.ShoppingListItem;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingListDetailActivity extends Activity implements WearableListView.ClickListener {
+public class ShoppingListDetailActivity extends Activity implements WearableListView.ClickListener, ShoppingListItemWearableAdapter.ActionButtonListener {
 
     private WearableListView mListView;
 
@@ -28,17 +30,31 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         }
 
         mListView = (WearableListView) findViewById(R.id.list);
-        mListView.setAdapter(new ShoppingListItemWearableAdapter(this, items));
+        ShoppingListItemWearableAdapter itemsAdapter = new ShoppingListItemWearableAdapter(this, items);
+        itemsAdapter.setActionButtonListener(this);
+        mListView.setAdapter(itemsAdapter);
         mListView.setClickListener(this);
     }
 
     @Override
     public void onClick(WearableListView.ViewHolder viewHolder) {
         Log.d("WEARABLE_TOBY", "item clicked");
+
+        ((SLItemViewHolder) viewHolder).showActionButtons();
     }
 
     @Override
     public void onTopEmptyRegionClick() {
         //do nothing
+    }
+
+    @Override
+    public void onDeleteClicked(WearableListView.ViewHolder viewHolder) {
+        ((SLItemViewHolder) viewHolder).hideActionButtons();
+    }
+
+    @Override
+    public void onCheckClicked(WearableListView.ViewHolder viewHolder) {
+        ((SLItemViewHolder) viewHolder).hideActionButtons();
     }
 }

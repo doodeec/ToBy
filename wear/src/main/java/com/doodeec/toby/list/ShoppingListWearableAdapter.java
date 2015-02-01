@@ -1,10 +1,11 @@
-package com.doodeec.toby;
+package com.doodeec.toby.list;
 
 import android.content.Context;
 import android.support.wearable.view.WearableListView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.doodeec.toby.R;
 import com.doodeec.tobycommon.model.ShoppingList;
 
 import java.util.List;

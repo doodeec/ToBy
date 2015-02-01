@@ -1,10 +1,11 @@
-package com.doodeec.toby;
+package com.doodeec.toby.detail;
 
 import android.content.Context;
 import android.support.wearable.view.WearableListView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.doodeec.toby.R;
 import com.doodeec.tobycommon.model.ShoppingListItem;
 
 import java.util.List;
@@ -15,10 +16,15 @@ import java.util.List;
 public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
     private final LayoutInflater mInflater;
     private List<ShoppingListItem> mShoppingListItems;
+    private ActionButtonListener mListener;
 
     public ShoppingListItemWearableAdapter(Context context, List<ShoppingListItem> list) {
         mInflater = LayoutInflater.from(context);
         mShoppingListItems = list;
+    }
+
+    public void setActionButtonListener(ActionButtonListener listener) {
+        mListener = listener;
     }
 
     @Override
@@ -33,10 +39,17 @@ public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
 
         viewHolder.setName(item.getName());
         viewHolder.setTag(position);
+        viewHolder.setActionBtnListener(mListener);
     }
 
     @Override
     public int getItemCount() {
         return mShoppingListItems.size();
+    }
+
+    public interface ActionButtonListener {
+        void onDeleteClicked(WearableListView.ViewHolder viewHolder);
+
+        void onCheckClicked(WearableListView.ViewHolder viewHolder);
     }
 }

@@ -1,4 +1,4 @@
-package com.doodeec.toby;
+package com.doodeec.toby.list;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
+import com.doodeec.toby.R;
+import com.doodeec.toby.detail.ShoppingListDetailActivity;
 import com.doodeec.tobycommon.model.ShoppingList;
 import com.doodeec.tobycommon.model.ShoppingListItem;
 

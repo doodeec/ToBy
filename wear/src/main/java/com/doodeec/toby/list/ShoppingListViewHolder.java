@@ -1,17 +1,19 @@
-package com.doodeec.toby;
+package com.doodeec.toby.list;
 
 import android.support.wearable.view.WearableListView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.doodeec.toby.R;
+
 /**
  * Created by Dusan Bartos on 1.2.2015.
  */
-public class SLItemViewHolder extends WearableListView.ViewHolder {
+public class ShoppingListViewHolder extends WearableListView.ViewHolder {
 
     TextView mName;
 
-    public SLItemViewHolder(View v) {
+    public ShoppingListViewHolder(View v) {
         super(v);
 
         mName = (TextView) v.findViewById(R.id.name);

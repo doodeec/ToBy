@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dusan Bartos on 17.1.2015.
+ * @author dusan.bartos
  */
 public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemViewHolder> {
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="grey">#ccc</color>
     <color name="fab_color_1">#ffc51ed5</color>
     <color name="fab_color_1_muted">#99951aa4</color>
 </resources>

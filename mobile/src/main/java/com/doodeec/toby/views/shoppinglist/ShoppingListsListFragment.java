@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.doodeec.toby.R;
@@ -16,12 +17,15 @@ import com.doodeec.toby.views.FloatingActionButton;
 import com.doodeec.toby.views.shoppinglist.edit.CreateListDialog;
 import com.doodeec.toby.views.shoppinglist.edit.ICreateListListener;
 
+/**
+ * @author dusan.bartos
+ */
 public class ShoppingListsListFragment extends Fragment {
 
     public final static String TAG = "ShoppingListsList";
 
     private ShoppingListsAdapter adapter;
-    private int i = 0;
+    private TextView warningText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,9 @@ public class ShoppingListsListFragment extends Fragment {
 
         adapter.setData(AppData.getInstance().getShoppingLists());
 
+        warningText = (TextView) rootView.findViewById(R.id.warning);
+        checkDataSize();
+
         FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.floatingButton);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,11 +53,12 @@ public class ShoppingListsListFragment extends Fragment {
                         Toast.makeText(getActivity(), shoppingList.getName(), Toast.LENGTH_SHORT).show();
                         AppData.getInstance().addShoppingList(shoppingList);
                         adapter.notifyDataSetChanged();
+                        checkDataSize();
                     }
 
                     @Override
                     public void OnListDismissed() {
-
+                        checkDataSize();
                     }
                 });
             }
@@ -61,5 +69,13 @@ public class ShoppingListsListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private void checkDataSize() {
+        if (AppData.getInstance().getShoppingLists().size() > 0) {
+            warningText.setVisibility(View.GONE);
+        } else {
+            warningText.setVisibility(View.VISIBLE);
+        }
     }
 }

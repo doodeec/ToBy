@@ -23,6 +23,7 @@ public class ShoppingItemsListFragment extends Fragment {
 
     private ShoppingItemAdapter adapter;
     private int i = 0;
+    private TextView warningText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -37,12 +38,8 @@ public class ShoppingItemsListFragment extends Fragment {
 
         adapter.setData(AppData.getInstance().getShoppingListItems());
 
-        TextView warningText = (TextView) rootView.findViewById(R.id.warning);
-        if (AppData.getInstance().getShoppingListItems().size() > 0) {
-            warningText.setVisibility(View.GONE);
-        } else {
-            warningText.setVisibility(View.VISIBLE);
-        }
+        warningText = (TextView) rootView.findViewById(R.id.warning);
+        checkDataSize();
 
         FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.floatingButton);
         fab1.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +47,7 @@ public class ShoppingItemsListFragment extends Fragment {
             public void onClick(View v) {
                 AppData.getInstance().addShoppingListItem(new ShoppingListItem("Shopping item " + i++));
                 adapter.notifyDataSetChanged();
+                checkDataSize();
             }
         });
 
@@ -58,5 +56,13 @@ public class ShoppingItemsListFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return rootView;
+    }
+
+    private void checkDataSize() {
+        if (AppData.getInstance().getShoppingListItems().size() > 0) {
+            warningText.setVisibility(View.GONE);
+        } else {
+            warningText.setVisibility(View.VISIBLE);
+        }
     }
 }

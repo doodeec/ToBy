@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.doodeec.toby.R;
 
 /**
- * Created by Dusan Bartos on 17.1.2015.
+ * @author dusan.bartos
  */
 public class ShoppingItemViewHolder extends RecyclerView.ViewHolder {
 

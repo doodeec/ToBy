@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Dusan Bartos on 14.1.2015.
+ * @author dusan.bartos
  */
 public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewHolder> {
 
@@ -46,6 +46,9 @@ public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewH
         ShoppingList list = data.get(position);
 
         holder.setName(list.getName());
+        if (list.getShop() != null) {
+            holder.setShopName(list.getShop().getName());
+        }
     }
 
     @Override

@@ -42,6 +42,10 @@ public class ShoppingList {
         this.id = id;
     }
 
+    public IShop getShop() {
+        return shop;
+    }
+
     public List<IShoppingListItem> getItems() {
         return items;
     }

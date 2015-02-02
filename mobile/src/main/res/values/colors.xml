@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="fab_color_1">#ff5252</color>
-    <color name="fab_color_1_muted">#ff8080</color>
+    <color name="fab_color_1">#ffc51ed5</color>
+    <color name="fab_color_1_muted">#99951aa4</color>
 </resources>

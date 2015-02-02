@@ -1,7 +1,7 @@
 package com.doodeec.tobycommon.model;
 
 /**
- * Created by dusan.bartos on 2.2.2015.
+ * @author dusan.bartos
  */
 public interface IShop extends IBaseDBObject {
 

@@ -7,8 +7,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.doodeec.toby.Presentation.ShoppingItem.ShoppingItemListActivity;
-import com.doodeec.toby.Presentation.ShoppingList.ShoppingListListActivity;
+import com.doodeec.toby.presentation.shoppingitem.ShoppingItemListActivity;
+import com.doodeec.toby.presentation.shoppinglist.ShoppingListListActivity;
 
 public class MainActivity extends ActionBarActivity {
 

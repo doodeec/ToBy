@@ -16,7 +16,7 @@
         android:text="No data available"
         android:layout_gravity="center_horizontal"/>
 
-    <com.doodeec.toby.presentation.FloatingActionButton
+    <com.doodeec.toby.views.FloatingActionButton
             android:id="@+id/floatingButton"
             android:layout_width="@dimen/fab_size"
             android:layout_height="@dimen/fab_size"
@@ -33,6 +33,6 @@
                 android:layout_gravity="center"
                 android:duplicateParentState="true"/>
 
-    </com.doodeec.toby.presentation.FloatingActionButton>
+    </com.doodeec.toby.views.FloatingActionButton>
 
 </FrameLayout>

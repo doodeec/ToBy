@@ -1,4 +1,4 @@
-package com.doodeec.toby.Storage;
+package com.doodeec.toby.dbstorage;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

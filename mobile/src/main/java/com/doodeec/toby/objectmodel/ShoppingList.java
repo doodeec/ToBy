@@ -1,10 +1,10 @@
-package com.doodeec.toby.Model;
+package com.doodeec.toby.objectmodel;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.doodeec.toby.ApplicationState.AppData;
-import com.doodeec.toby.Storage.ShoppingListDBEntry;
+import com.doodeec.toby.appstate.AppData;
+import com.doodeec.toby.dbstorage.ShoppingListDBEntry;
 
 import java.util.Date;
 

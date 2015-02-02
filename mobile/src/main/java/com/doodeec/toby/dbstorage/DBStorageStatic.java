@@ -1,4 +1,4 @@
-package com.doodeec.toby.Storage;
+package com.doodeec.toby.dbstorage;
 
 /**
  * Static constants for handling the DB

@@ -1,9 +1,9 @@
-package com.doodeec.toby.Model;
+package com.doodeec.toby.objectmodel;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.doodeec.toby.Storage.ShopCategoryDBEntry;
+import com.doodeec.toby.dbstorage.ShopCategoryDBEntry;
 
 /**
  * Shop Category object

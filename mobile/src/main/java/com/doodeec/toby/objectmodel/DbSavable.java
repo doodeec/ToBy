@@ -1,4 +1,4 @@
-package com.doodeec.toby.Model;
+package com.doodeec.toby.objectmodel;
 
 import android.content.ContentValues;
 

@@ -1,20 +1,20 @@
-package com.doodeec.toby.ApplicationState;
+package com.doodeec.toby.appstate;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.doodeec.toby.Model.DbSavable;
-import com.doodeec.toby.Model.Shop;
-import com.doodeec.toby.Model.ShopCategory;
-import com.doodeec.toby.Model.ShoppingList;
-import com.doodeec.toby.Model.ShoppingListItem;
-import com.doodeec.toby.Storage.DBHelper;
-import com.doodeec.toby.Storage.ListItemDBEntry;
-import com.doodeec.toby.Storage.ShopCategoryDBEntry;
-import com.doodeec.toby.Storage.ShopDBEntry;
-import com.doodeec.toby.Storage.ShoppingListDBEntry;
+import com.doodeec.toby.objectmodel.DbSavable;
+import com.doodeec.toby.objectmodel.Shop;
+import com.doodeec.toby.objectmodel.ShopCategory;
+import com.doodeec.toby.objectmodel.ShoppingList;
+import com.doodeec.toby.objectmodel.ShoppingListItem;
+import com.doodeec.toby.dbstorage.DBHelper;
+import com.doodeec.toby.dbstorage.ListItemDBEntry;
+import com.doodeec.toby.dbstorage.ShopCategoryDBEntry;
+import com.doodeec.toby.dbstorage.ShopDBEntry;
+import com.doodeec.toby.dbstorage.ShoppingListDBEntry;
 import com.doodeec.tobycommon.model.BaseObservable;
 
 import java.util.ArrayList;

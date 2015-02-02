@@ -1,4 +1,4 @@
-package com.doodeec.toby.Storage;
+package com.doodeec.toby.dbstorage;
 
 /**
  * DB entry for item object entry in shopping list

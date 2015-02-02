@@ -1,4 +1,4 @@
-package com.doodeec.toby.Presentation.ShoppingItem;
+package com.doodeec.toby.views.shoppingitem;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -24,7 +24,7 @@ public class ShoppingItemListActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_shopping_item_list, menu);
+//        getMenuInflater().inflate(R.menu.menu_shopping_item_list, menu);
         return true;
     }
 

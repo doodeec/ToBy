@@ -1,12 +1,12 @@
-package com.doodeec.toby.Presentation.ShoppingList;
+package com.doodeec.toby.views.shoppinglist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.doodeec.toby.ApplicationState.AppState;
-import com.doodeec.toby.Model.ShoppingList;
+import com.doodeec.toby.appstate.AppState;
+import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.R;
 
 import java.util.ArrayList;

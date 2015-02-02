@@ -1,4 +1,4 @@
-package com.doodeec.toby.Presentation.ShoppingItem;
+package com.doodeec.toby.views.shoppinglist;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,13 +7,13 @@ import android.widget.TextView;
 import com.doodeec.toby.R;
 
 /**
- * Created by Dusan Bartos on 17.1.2015.
+ * Created by Dusan Bartos on 14.1.2015.
  */
-public class ShoppingItemViewHolder extends RecyclerView.ViewHolder {
+public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
 
     TextView name;
 
-    public ShoppingItemViewHolder(View view) {
+    public ShoppingListViewHolder(View view) {
         super(view);
 
         name = (TextView) view.findViewById(R.id.list_name);

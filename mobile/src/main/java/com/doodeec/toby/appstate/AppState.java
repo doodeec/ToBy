@@ -1,4 +1,4 @@
-package com.doodeec.toby.ApplicationState;
+package com.doodeec.toby.appstate;
 
 import android.app.Application;
 import android.content.Context;

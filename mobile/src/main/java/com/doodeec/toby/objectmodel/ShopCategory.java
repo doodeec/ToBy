@@ -37,4 +37,9 @@ public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory impl
     public String getTableName() {
         return ShopCategoryDBEntry.TABLE_NAME;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

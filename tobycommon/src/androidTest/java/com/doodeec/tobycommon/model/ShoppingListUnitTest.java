@@ -53,8 +53,8 @@ public class ShoppingListUnitTest {
             }
 
             @Override
-            public Integer getAmount() {
-                return null;
+            public double getAmount() {
+                return 0;
             }
         };
         this.mockItemTwo = new IShoppingListItem() {
@@ -63,8 +63,8 @@ public class ShoppingListUnitTest {
             }
 
             @Override
-            public Integer getAmount() {
-                return null;
+            public double getAmount() {
+                return 0;
             }
 
             @Override
@@ -98,8 +98,8 @@ public class ShoppingListUnitTest {
             }
 
             @Override
-            public Integer getAmount() {
-                return null;
+            public double getAmount() {
+                return 0;
             }
 
             @Override

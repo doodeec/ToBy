@@ -3,10 +3,10 @@ package com.doodeec.tobycommon.model;
 /**
  * @author dusan.bartos
  */
-public interface IShoppingListItem extends IBaseDBObject{
-    void setAmount(Integer amount);
+public interface IShoppingListItem extends IBaseDBObject {
+    void setAmount(double amount);
 
-    Integer getAmount();
+    double getAmount();
 
     void setUnitType(UnitType type);
 

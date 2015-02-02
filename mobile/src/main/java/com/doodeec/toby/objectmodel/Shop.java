@@ -44,4 +44,9 @@ public class Shop extends com.doodeec.tobycommon.model.Shop implements DbSavable
     public String getTableName() {
         return ShopDBEntry.TABLE_NAME;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

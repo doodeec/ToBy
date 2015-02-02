@@ -36,6 +36,7 @@ public class AppData {
             synchronized (AppData.class) {
                 if (instance == null) {
                     instance = createInstance();
+                    instance.generateDefaultCategories();
                 }
             }
         }
@@ -96,13 +97,13 @@ public class AppData {
         this.allShops.addSingleItem(shop);
     }
 
-    public void setCategories(List<ShopCategory> categories) {
+    /*public void setCategories(List<ShopCategory> categories) {
         this.allCategories.updateData(categories);
     }
 
     public void addCategory(ShopCategory category) {
         this.allCategories.addSingleItem(category);
-    }
+    }*/
 
     public void setShoppingLists(List<ShoppingList> shoppingLists) {
         this.allShoppingLists.updateData(shoppingLists);
@@ -240,5 +241,16 @@ public class AppData {
             Log.d("TOBY", "Inserted " + object.getClass().getSimpleName() + ": " + newRowId);
         }
         c.close();
+    }
+
+    private void generateDefaultCategories() {
+        this.allCategories.addSingleItem(new ShopCategory("Potraviny"));
+        this.allCategories.addSingleItem(new ShopCategory("Ovocie a zelenina"));
+        this.allCategories.addSingleItem(new ShopCategory("Mäsiarstvo"));
+        this.allCategories.addSingleItem(new ShopCategory("Domáce potreby"));
+        this.allCategories.addSingleItem(new ShopCategory("Darčeky"));
+        this.allCategories.addSingleItem(new ShopCategory("Obuv"));
+        this.allCategories.addSingleItem(new ShopCategory("Drogéria"));
+        this.allCategories.addSingleItem(new ShopCategory("Nábytok"));
     }
 }

@@ -48,6 +48,8 @@ public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewH
         holder.setName(list.getName());
         if (list.getShop() != null) {
             holder.setShopName(list.getShop().getName());
+        } else {
+            holder.setShopName(null);
         }
     }
 

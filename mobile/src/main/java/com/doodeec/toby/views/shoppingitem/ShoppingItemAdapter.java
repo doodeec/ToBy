@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @author dusan.bartos
  */
-public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemViewHolder> {
+public class ShoppingItemAdapter extends RecyclerView.Adapter<SLItemViewHolder> {
 
         List<ShoppingListItem> data;
 
@@ -34,18 +34,19 @@ public class ShoppingItemAdapter extends RecyclerView.Adapter<ShoppingItemViewHo
         }
 
         @Override
-        public ShoppingItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        public SLItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater
                     .from(AppState.getAppContext())
-                    .inflate(R.layout.shopping_list_holder, parent, false);
-            return new ShoppingItemViewHolder(view);
+                    .inflate(R.layout.list_item_holder, parent, false);
+            return new SLItemViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(ShoppingItemViewHolder holder, int position) {
+        public void onBindViewHolder(SLItemViewHolder holder, int position) {
             ShoppingListItem item = data.get(position);
 
             holder.setName(item.getName());
+            holder.setUnitAmount(item.getAmount(), item.getUnit());
         }
 
         @Override

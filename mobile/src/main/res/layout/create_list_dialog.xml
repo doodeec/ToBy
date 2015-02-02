@@ -5,7 +5,9 @@
               android:minWidth="@dimen/min_width_dialog"
               android:orientation="vertical"
               android:paddingLeft="@dimen/padding"
-              android:paddingRight="@dimen/padding">
+              android:paddingRight="@dimen/padding"
+              android:paddingTop="@dimen/small_padding"
+              android:paddingBottom="@dimen/small_padding">
 
     <EditText
         android:id="@+id/shopping_list_name"
@@ -14,14 +16,14 @@
         android:hint="@string/list_name_hint"
         android:gravity="center"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/shopping_list_shop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/shop_hint"
         android:gravity="center"/>
 
-    <EditText
+    <Spinner
         android:id="@+id/shopping_list_shop_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -45,7 +47,7 @@
             android:id="@+id/submit_list"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/save_btn"
+            android:text="@string/save_list_btn"
             style="?android:buttonBarButtonStyle"
             android:layout_toRightOf="@id/dismiss_list"/>
     </RelativeLayout>

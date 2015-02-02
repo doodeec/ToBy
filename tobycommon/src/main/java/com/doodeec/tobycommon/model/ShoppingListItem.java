@@ -5,7 +5,7 @@ package com.doodeec.tobycommon.model;
  */
 public class ShoppingListItem extends ShoppingListItemBase {
 
-    protected Integer amount;
+    protected double amount;
     protected UnitType unit;
 
     public ShoppingListItem() {
@@ -16,12 +16,12 @@ public class ShoppingListItem extends ShoppingListItemBase {
     }
 
     @Override
-    public void setAmount(Integer amount) {
+    public void setAmount(double amount) {
         this.amount = amount;
     }
 
     @Override
-    public Integer getAmount() {
+    public double getAmount() {
         return amount;
     }
 

@@ -2,7 +2,9 @@
 
     <dimen name="min_width_dialog">300dp</dimen>
 
+    <dimen name="small_padding">8dp</dimen>
     <dimen name="padding">16dp</dimen>
+    <dimen name="big_padding">32dp</dimen>
 
     <dimen name="fab_elevation">8dp</dimen>
     <dimen name="fab_press_translation_z">9dp</dimen>

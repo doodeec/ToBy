@@ -11,10 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.doodeec.toby.R;
+import com.doodeec.toby.appstate.AppData;
+import com.doodeec.toby.objectmodel.Shop;
+import com.doodeec.toby.objectmodel.ShopCategory;
 import com.doodeec.toby.objectmodel.ShoppingList;
 
 import butterknife.ButterKnife;
@@ -30,9 +35,9 @@ public class CreateListDialog extends DialogFragment {
     @InjectView(R.id.shopping_list_name)
     EditText listName;
     @InjectView(R.id.shopping_list_shop)
-    EditText shopName;
+    Spinner shop;
     @InjectView(R.id.shopping_list_shop_category)
-    EditText shopCategory;
+    Spinner shopCategory;
     @InjectView(R.id.dismiss_list)
     Button dismissBtn;
     @InjectView(R.id.submit_list)
@@ -57,9 +62,15 @@ public class CreateListDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.create_dialog, container, false);
+        View view = inflater.inflate(R.layout.create_list_dialog, container, false);
 
         ButterKnife.inject(this, view);
+
+        shopCategory.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
+                AppData.getInstance().getCategories()));
+
+        shop.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
+                AppData.getInstance().getShops()));
 
         return view;
     }
@@ -83,9 +94,9 @@ public class CreateListDialog extends DialogFragment {
     }
 
     private void createShoppingList() {
-        String name = listName.getText().toString();
-        String shop = shopName.getText().toString();
-        String category = shopCategory.getText().toString();
+        String name = this.listName.getText().toString();
+        Shop shop = AppData.getInstance().getShops().get(this.shop.getSelectedItemPosition());
+        ShopCategory category = AppData.getInstance().getCategories().get(this.shopCategory.getSelectedItemPosition());
 
         if (name.length() == 0) return;
 

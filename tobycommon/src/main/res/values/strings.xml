@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">ToByCommon</string>
+
+    <string name="unit_type_units">ks</string>
+    <string name="unit_type_dekagram">dkg</string>
+    <string name="unit_type_kilo">kg</string>
+    <string name="unit_type_meter">m</string>
+    <string name="unit_type_centimeter">cm</string>
+    <string name="unit_type_liter">l</string>
+    <string name="unit_type_deciliter">dcl</string>
+    <string name="unit_type_unknown"> </string>
 </resources>

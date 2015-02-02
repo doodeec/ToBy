@@ -34,15 +34,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/dismiss_btn"
-            style="?android:buttonBarButtonStyle"/>
+            android:layout_marginRight="@dimen/padding"
+            style="@style/TransparentButton"/>
 
         <Button
             android:id="@+id/submit_shop"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/save_shop_btn"
-            style="?android:buttonBarButtonStyle"
-            android:layout_toRightOf="@id/dismiss_shop"/>
+            android:layout_toRightOf="@id/dismiss_shop"
+            style="@style/FormButton"/>
     </RelativeLayout>
 
 </LinearLayout>

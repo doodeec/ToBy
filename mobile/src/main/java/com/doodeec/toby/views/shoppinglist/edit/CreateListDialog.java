@@ -101,6 +101,8 @@ public class CreateListDialog extends DialogFragment {
         if (name.length() == 0) return;
 
         ShoppingList shoppingList = new ShoppingList(name);
+        shoppingList.setShop(shop);
+        shoppingList.setShopCategory(category);
 
         if (dialogListener != null) {
             dialogListener.OnListCreated(shoppingList);

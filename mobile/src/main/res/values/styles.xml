@@ -5,4 +5,19 @@
         <!-- Customize your theme here. -->
     </style>
 
+    <style name="TransparentButton">
+        <item name="android:paddingLeft">@dimen/padding</item>
+        <item name="android:paddingRight">@dimen/padding</item>
+        <item name="android:paddingTop">@dimen/small_padding</item>
+        <item name="android:paddingBottom">@dimen/small_padding</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:textColor">@color/teal</item>
+        <item name="android:textSize">@dimen/button_text_size</item>
+    </style>
+
+    <style name="FormButton" parent="TransparentButton">
+        <item name="android:background">@color/fab_color_1</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 </resources>

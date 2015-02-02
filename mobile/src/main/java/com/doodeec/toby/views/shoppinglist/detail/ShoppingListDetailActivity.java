@@ -1,4 +1,4 @@
-package com.doodeec.toby.views.shoppingitem;
+package com.doodeec.toby.views.shoppinglist.detail;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,24 +7,29 @@ import android.view.MenuItem;
 
 import com.doodeec.toby.R;
 
-public class ShoppingItemListActivity extends ActionBarActivity {
+/**
+ * @author dusan.bartos
+ */
+public class ShoppingListDetailActivity extends ActionBarActivity {
+
+    public static final String SHOPPING_LIST_ID = "slId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_activity);
 
-        ShoppingItemsListFragment fabFragment = new ShoppingItemsListFragment();
+        ShoppingListDetailFragment detailFragment = new ShoppingListDetailFragment();
 
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, fabFragment, ShoppingItemsListFragment.TAG)
+                .add(R.id.frame, detailFragment, ShoppingListDetailFragment.TAG)
                 .commit();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_shopping_item_list, menu);
+//        getMenuInflater().inflate(R.menu.menu_shopping_list_list, menu);
         return true;
     }
 

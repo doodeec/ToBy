@@ -6,6 +6,7 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_shopping_item_list">ShoppingItemListActivity</string>
     <string name="title_activity_shopping_list_list">ShoppingListListActivity</string>
+    <string name="title_activity_shopping_list_detail">ShoppingListDetailActivity</string>
 
     <string name="list_name_hint">List name</string>
     <string name="shop_name_hint">Shop name</string>

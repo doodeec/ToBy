@@ -1,5 +1,6 @@
 package com.doodeec.toby.views.shoppinglist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,6 +15,8 @@ import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
 import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.views.FloatingActionButton;
+import com.doodeec.toby.views.RecyclerItemClickListener;
+import com.doodeec.toby.views.shoppinglist.detail.ShoppingListDetailActivity;
 import com.doodeec.toby.views.shoppinglist.edit.CreateListDialog;
 import com.doodeec.toby.views.shoppinglist.edit.ICreateListListener;
 
@@ -67,6 +70,19 @@ public class ShoppingListsListFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(adapter);
+        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                Intent detailIntent = new Intent(getActivity(), ShoppingListDetailActivity.class);
+                detailIntent.putExtra(ShoppingListDetailActivity.SHOPPING_LIST_ID, position);
+                startActivity(detailIntent);
+            }
+
+            @Override
+            public void onItemLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "Edit shopping list", Toast.LENGTH_SHORT).show();
+            }
+        }));
 
         return rootView;
     }

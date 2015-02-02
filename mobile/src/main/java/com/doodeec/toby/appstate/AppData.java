@@ -37,6 +37,7 @@ public class AppData {
                 if (instance == null) {
                     instance = createInstance();
                     instance.generateDefaultCategories();
+                    instance.generateDefaultShop();
                 }
             }
         }
@@ -241,6 +242,11 @@ public class AppData {
             Log.d("TOBY", "Inserted " + object.getClass().getSimpleName() + ": " + newRowId);
         }
         c.close();
+    }
+
+    //TODO remove
+    private void generateDefaultShop() {
+        this.allShops.addSingleItem(new Shop("BILLA"));
     }
 
     private void generateDefaultCategories() {

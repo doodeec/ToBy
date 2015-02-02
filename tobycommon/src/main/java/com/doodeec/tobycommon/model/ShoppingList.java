@@ -42,8 +42,20 @@ public class ShoppingList {
         this.id = id;
     }
 
+    public void setShop(IShop shop) {
+        this.shop = shop;
+    }
+
     public IShop getShop() {
         return shop;
+    }
+
+    public void setShopCategory(IShopCategory shopCategory) {
+        this.category = shopCategory;
+    }
+
+    public IShopCategory getShopCategory() {
+        return category;
     }
 
     public List<IShoppingListItem> getItems() {

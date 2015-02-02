@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="white">#fff</color>
     <color name="grey">#ccc</color>
-    <color name="fab_color_1">#ffc51ed5</color>
-    <color name="fab_color_1_muted">#99951aa4</color>
+    <color name="purple">#AB47BC</color>
+    <color name="purpleDark">#997B1FA2</color>
+    <color name="teal">#ff009688</color>
+    <color name="tealDark">#9900695C</color>
+
+    <color name="fab_color_1">@color/purple</color>
+    <color name="fab_color_1_muted">@color/purpleDark</color>
 </resources>

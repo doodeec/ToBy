@@ -2,6 +2,7 @@
 
     <dimen name="min_width_dialog">300dp</dimen>
 
+    <dimen name="xsmall_padding">4dp</dimen>
     <dimen name="small_padding">8dp</dimen>
     <dimen name="padding">16dp</dimen>
     <dimen name="big_padding">32dp</dimen>
@@ -11,4 +12,6 @@
     <dimen name="fab_size">56dp</dimen>
     <dimen name="fab_size_small">40dp</dimen>
     <dimen name="fab_icon_size">24dp</dimen>
+
+    <dimen name="button_text_size">12sp</dimen>
 </resources>

@@ -25,11 +25,6 @@ public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory impl
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
     public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShopCategoryDBEntry.COL_id, id);

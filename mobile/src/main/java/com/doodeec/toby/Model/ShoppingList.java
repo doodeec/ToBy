@@ -45,11 +45,6 @@ public class ShoppingList extends com.doodeec.tobycommon.model.ShoppingList impl
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
     public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShoppingListDBEntry.COL_id, id);

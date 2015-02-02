@@ -12,11 +12,11 @@ import java.util.List;
 public class ShoppingList {
 
     protected Integer id;
-    protected ShopCategory category;
-    protected Shop shop;
+    protected IShopCategory category;
+    protected IShop shop;
     protected String name;
     protected Boolean completed = false;
-    protected List<ShoppingListItem> items = new ArrayList<>();
+    protected List<IShoppingListItem> items = new ArrayList<>();
     protected Date created;
     protected Date edited;
     protected Date dueDate;
@@ -38,11 +38,15 @@ public class ShoppingList {
         return id;
     }
 
-    public List<ShoppingListItem> getItems() {
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public List<IShoppingListItem> getItems() {
         return items;
     }
 
-    public void setItems(List<ShoppingListItem> items) {
+    public void setItems(List<IShoppingListItem> items) {
         if (items != null) {
             this.items = items;
         } else {
@@ -50,17 +54,17 @@ public class ShoppingList {
         }
     }
 
-    public void addItem(ShoppingListItem item) {
+    public void addItem(IShoppingListItem item) {
         this.items.add(item);
     }
 
-    protected static String serializeItems(List<ShoppingListItem> items) {
+    protected static String serializeItems(List<IShoppingListItem> items) {
         //TODO fill string
         return "";
     }
 
-    protected static List<ShoppingListItem> deserializeItems(String serializedItems) {
-        List<ShoppingListItem> items = new ArrayList<>();
+    protected static List<IShoppingListItem> deserializeItems(String serializedItems) {
+        List<IShoppingListItem> items = new ArrayList<>();
         //TODO fill list
         return items;
     }

@@ -5,7 +5,7 @@ package com.doodeec.tobycommon.model;
  *
  * @author Dusan Bartos
  */
-public class ShopCategory {
+public class ShopCategory implements IShopCategory {
 
     protected Integer id;
     protected String name;
@@ -19,7 +19,18 @@ public class ShopCategory {
         this.usage = 0;
     }
 
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public Integer getId() {
         return id;
+    }
+
+    @Override
+    public String getName() {
+        return name;
     }
 }

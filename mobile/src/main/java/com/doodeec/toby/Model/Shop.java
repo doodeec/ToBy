@@ -32,11 +32,6 @@ public class Shop extends com.doodeec.tobycommon.model.Shop implements DbSavable
     }
 
     @Override
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Override
     public ContentValues getValues() {
         ContentValues values = new ContentValues();
         values.put(ShopDBEntry.COL_id, id);

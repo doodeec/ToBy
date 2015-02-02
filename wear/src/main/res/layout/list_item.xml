@@ -31,11 +31,16 @@
         android:layout_toRightOf="@id/circle"/>
 
     <RelativeLayout
+        android:id="@+id/overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/whiteTransparent" />
+
+    <RelativeLayout
         android:id="@+id/action_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:background="@color/whiteTransparent">
+        android:gravity="center">
 
         <ImageView
             android:id="@+id/delete"

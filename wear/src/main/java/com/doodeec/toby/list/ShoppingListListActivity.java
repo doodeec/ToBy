@@ -8,6 +8,7 @@ import android.util.Log;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.detail.ShoppingListDetailActivity;
+import com.doodeec.tobycommon.model.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
 import com.doodeec.tobycommon.model.ShoppingListItem;
 
@@ -33,7 +34,7 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
         shoppingLists.add(new ShoppingList("Piaty zoznam"));
         shoppingLists.add(new ShoppingList("Siesty zoznam"));
 
-        List<ShoppingListItem> items = new ArrayList<>();
+        List<IShoppingListItem> items = new ArrayList<>();
         items.add(new ShoppingListItem("Prva polozka"));
         items.add(new ShoppingListItem("Druha polozka"));
         items.add(new ShoppingListItem("Tretia polozka"));

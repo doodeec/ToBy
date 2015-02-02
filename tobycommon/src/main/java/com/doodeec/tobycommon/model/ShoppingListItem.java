@@ -1,12 +1,12 @@
 package com.doodeec.tobycommon.model;
 
 /**
- * Created by Dusan Bartos on 12.1.2015.
+ * @author dusan.bartos
  */
-public class ShoppingListItem {
+public class ShoppingListItem extends ShoppingListItemBase {
 
-    protected Integer id;
-    protected String name;
+    protected Integer amount;
+    protected UnitType unit;
 
     public ShoppingListItem() {
     }
@@ -15,11 +15,23 @@ public class ShoppingListItem {
         this.name = name;
     }
 
-    public String getName() {
-        return name;
+    @Override
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 
-    public Integer getId() {
-        return id;
+    @Override
+    public Integer getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void setUnitType(UnitType type) {
+        this.unit = type;
+    }
+
+    @Override
+    public UnitType getUnit() {
+        return unit;
     }
 }

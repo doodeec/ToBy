@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.list.ShoppingListListActivity;
-import com.doodeec.tobycommon.model.ShoppingListItem;
+import com.doodeec.tobycommon.model.IShoppingListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +21,7 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_lists_activity);
 
-        List<ShoppingListItem> items;
+        List<IShoppingListItem> items;
         if (getIntent().getExtras() != null) {
             Integer position = getIntent().getExtras().getInt(ShoppingListListActivity.LIST_ID_EXTRA);
             items = ShoppingListListActivity.shoppingLists.get(position).getItems();

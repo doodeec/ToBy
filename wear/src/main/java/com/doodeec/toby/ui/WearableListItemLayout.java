@@ -22,6 +22,7 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
     private ImageView mDelete;
     private ImageView mCheck;
     private RelativeLayout mActionButtons;
+    private RelativeLayout mActionButtonsOverlay;
     private TextView mName;
     private ShoppingListItemWearableAdapter.ActionButtonListener mActionBtnListener;
 
@@ -51,6 +52,7 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
         mName = (TextView) findViewById(R.id.name);
 
         mActionButtons = (RelativeLayout) findViewById(R.id.action_buttons);
+        mActionButtonsOverlay = (RelativeLayout) findViewById(R.id.overlay);
         mDelete = (ImageView) findViewById(R.id.delete);
         mCheck = (ImageView) findViewById(R.id.check);
 
@@ -72,7 +74,11 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
         });
 
         measure(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+
+        // hide buttons and overlay initially
         mActionButtons.setTranslationX(getMeasuredWidth());
+        mActionButtonsOverlay.setAlpha(0);
+
         ((GradientDrawable) mDelete.getDrawable()).setColor(getResources().getColor(R.color.red));
         ((GradientDrawable) mCheck.getDrawable()).setColor(getResources().getColor(R.color.green));
     }
@@ -80,8 +86,6 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
     @Override
     public void onCenterPosition(boolean animate) {
         mName.setAlpha(1f);
-        mCircle.setScaleX(1f);
-        mCircle.setScaleY(1f);
         mCircle.animate()
                 .scaleX(1.2f)
                 .scaleY(1.2f)
@@ -111,10 +115,16 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
             mActionButtons.animate()
                     .translationX(0)
                     .start();
+            mActionButtonsOverlay.animate()
+                    .alpha(1)
+                    .start();
         } else {
             if (mActionButtons.getTranslationX() == getMeasuredWidth()) return;
             mActionButtons.animate()
                     .translationX(getMeasuredWidth())
+                    .start();
+            mActionButtonsOverlay.animate()
+                    .alpha(0)
                     .start();
         }
     }

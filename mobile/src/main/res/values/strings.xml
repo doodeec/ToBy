@@ -16,4 +16,6 @@
     <string name="save_list_btn">Save shopping list</string>
     <string name="save_shop_btn">Save shop</string>
 
+    <string name="list_no_name">List with no name created</string>
+
 </resources>

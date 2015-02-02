@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.doodeec.toby.R;
 
 /**
- * Created by Dusan Bartos on 1.2.2015.
+ * @author dusan.bartos
  */
 public class ShoppingListViewHolder extends WearableListView.ViewHolder {
 

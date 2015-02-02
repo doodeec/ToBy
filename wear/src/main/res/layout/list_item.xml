@@ -1,46 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.doodeec.toby.ui.WearableListItemLayout
+<com.doodeec.toby.ui.SLItemLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:gravity="center_vertical"
     android:layout_width="match_parent"
     android:layout_height="60dp">
 
-    <ImageView
-        android:id="@+id/circle"
-        android:layout_height="20dp"
-        android:layout_marginLeft="@dimen/big_padding"
-        android:layout_marginRight="@dimen/padding"
-        android:layout_marginTop="@dimen/padding"
-        android:layout_marginBottom="@dimen/padding"
-        android:layout_width="20dp"
-        android:layout_centerVertical="true"
-        android:src="@drawable/wl_circle"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/padding"
+        android:paddingBottom="@dimen/padding"
+        android:paddingLeft="@dimen/big_padding"
+        android:paddingRight="@dimen/big_padding">
 
-    <TextView
-        android:id="@+id/name"
-        android:gravity="center_vertical|left"
-        android:layout_width="wrap_content"
-        android:layout_marginRight="16dp"
-        android:layout_height="match_parent"
-        android:fontFamily="sans-serif-condensed-light"
-        android:lineSpacingExtra="-4sp"
-        android:textColor="@color/text"
-        android:textSize="16sp"
-        android:layout_centerVertical="true"
-        android:text="Johanis a Fred"
-        android:layout_toRightOf="@id/circle"/>
+        <TextView
+            android:id="@+id/name"
+            android:gravity="center_vertical"
+            android:layout_width="0dp"
+            android:layout_marginRight="16dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:fontFamily="sans-serif-condensed-light"
+            android:lineSpacingExtra="-4sp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="Johanis a Fred"/>
+
+        <TextView
+            android:id="@+id/amount"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed-light"
+            android:lineSpacingExtra="-4sp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="5"/>
+
+        <TextView
+            android:id="@+id/unit"
+            android:gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fontFamily="sans-serif-condensed-light"
+            android:lineSpacingExtra="-4sp"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:text="ks"/>
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/whiteTransparent" />
+        android:background="@color/whiteTransparent"/>
 
     <RelativeLayout
         android:id="@+id/action_buttons"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:visibility="invisible">
 
         <ImageView
             android:id="@+id/delete"
@@ -58,4 +79,4 @@
             android:layout_toRightOf="@id/delete"
             android:src="@drawable/wl_circle"/>
     </RelativeLayout>
-</com.doodeec.toby.ui.WearableListItemLayout>
+</com.doodeec.toby.ui.SLItemLayout>

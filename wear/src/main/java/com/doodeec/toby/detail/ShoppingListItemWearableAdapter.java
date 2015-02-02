@@ -11,7 +11,7 @@ import com.doodeec.tobycommon.model.IShoppingListItem;
 import java.util.List;
 
 /**
- * Created by Dusan Bartos on 1.2.2015.
+ * @author dusan.bartos
  */
 public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
     private final LayoutInflater mInflater;
@@ -29,7 +29,7 @@ public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
 
     @Override
     public WearableListView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SLItemViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
+        return new SLItemViewHolder(mInflater.inflate(R.layout.shopping_list, parent, false));
     }
 
     @Override
@@ -38,6 +38,8 @@ public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
         SLItemViewHolder viewHolder = (SLItemViewHolder) holder;
 
         viewHolder.setName(item.getName());
+        viewHolder.setAmount(item.getAmount());
+        viewHolder.setUnit(item.getUnit().resource);
         viewHolder.setTag(position);
         viewHolder.setActionBtnListener(mListener);
     }

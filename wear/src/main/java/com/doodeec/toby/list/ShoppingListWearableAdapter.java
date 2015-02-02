@@ -11,7 +11,7 @@ import com.doodeec.tobycommon.model.ShoppingList;
 import java.util.List;
 
 /**
- * Created by Dusan Bartos on 1.2.2015.
+ * @author dusan.bartos
  */
 public class ShoppingListWearableAdapter extends WearableListView.Adapter {
     private final LayoutInflater mInflater;

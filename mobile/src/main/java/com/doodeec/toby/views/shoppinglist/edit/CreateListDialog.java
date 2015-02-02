@@ -15,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
@@ -98,7 +99,10 @@ public class CreateListDialog extends DialogFragment {
         Shop shop = AppData.getInstance().getShops().get(this.shop.getSelectedItemPosition());
         ShopCategory category = AppData.getInstance().getCategories().get(this.shopCategory.getSelectedItemPosition());
 
-        if (name.length() == 0) return;
+        if (name.length() == 0) {
+            Toast.makeText(getActivity(), R.string.list_no_name, Toast.LENGTH_SHORT).show();
+            name = "Unnamed";
+        }
 
         ShoppingList shoppingList = new ShoppingList(name);
         shoppingList.setShop(shop);

@@ -1,28 +1,41 @@
 package com.doodeec.toby.detail;
 
+import android.support.annotation.StringRes;
 import android.support.wearable.view.WearableListView;
 import android.view.View;
 import android.widget.TextView;
 
 import com.doodeec.toby.R;
-import com.doodeec.toby.ui.WearableListItemLayout;
+import com.doodeec.toby.ui.SLItemLayout;
 
 /**
- * Created by Dusan Bartos on 1.2.2015.
+ * @author dusan.bartos
  */
 public class SLItemViewHolder extends WearableListView.ViewHolder {
 
     TextView mName;
-    WearableListItemLayout mItemLayout;
+    TextView mAmount;
+    TextView mUnit;
+    SLItemLayout mItemLayout;
 
     public SLItemViewHolder(View v) {
         super(v);
-        mItemLayout = (WearableListItemLayout) v;
+        mItemLayout = (SLItemLayout) v;
         mName = (TextView) v.findViewById(R.id.name);
+        mAmount = (TextView) v.findViewById(R.id.amount);
+        mUnit = (TextView) v.findViewById(R.id.unit);
     }
 
     public void setName(String name) {
         mName.setText(name);
+    }
+
+    public void setAmount(double amount) {
+        mAmount.setText(String.format("%.1f", amount));
+    }
+
+    public void setUnit(@StringRes int unitResource) {
+        mUnit.setText(unitResource);
     }
 
     public void setTag(Integer tag) {

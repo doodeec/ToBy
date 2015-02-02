@@ -5,7 +5,6 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.wearable.view.WearableListView;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -13,12 +12,9 @@ import android.widget.TextView;
 import com.doodeec.toby.R;
 import com.doodeec.toby.detail.ShoppingListItemWearableAdapter;
 
-public class WearableListItemLayout extends RelativeLayout implements WearableListView.OnCenterProximityListener {
+public class SLItemLayout extends RelativeLayout implements WearableListView.OnCenterProximityListener {
 
     private final float mFadedTextAlpha;
-    private final int mFadedCircleColor;
-    private final int mChosenCircleColor;
-    private ImageView mCircle;
     private ImageView mDelete;
     private ImageView mCheck;
     private RelativeLayout mActionButtons;
@@ -26,19 +22,17 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
     private TextView mName;
     private ShoppingListItemWearableAdapter.ActionButtonListener mActionBtnListener;
 
-    public WearableListItemLayout(Context context) {
+    public SLItemLayout(Context context) {
         this(context, null);
     }
 
-    public WearableListItemLayout(Context context, AttributeSet attrs) {
+    public SLItemLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public WearableListItemLayout(Context context, AttributeSet attrs, int defStyle) {
+    public SLItemLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         mFadedTextAlpha = 40 / 100f;
-        mFadedCircleColor = getResources().getColor(R.color.grey);
-        mChosenCircleColor = getResources().getColor(R.color.blue);
     }
 
     public void setActionButtonListener(ShoppingListItemWearableAdapter.ActionButtonListener actionBtnListener) {
@@ -48,7 +42,6 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
-        mCircle = (ImageView) findViewById(R.id.circle);
         mName = (TextView) findViewById(R.id.name);
 
         mActionButtons = (RelativeLayout) findViewById(R.id.action_buttons);
@@ -86,27 +79,14 @@ public class WearableListItemLayout extends RelativeLayout implements WearableLi
     @Override
     public void onCenterPosition(boolean animate) {
         mName.setAlpha(1f);
-        mCircle.animate()
-                .scaleX(1.2f)
-                .scaleY(1.2f)
-                .setInterpolator(new DecelerateInterpolator())
-                .start();
-        ((GradientDrawable) mCircle.getDrawable()).setColor(mChosenCircleColor);
+        setBackgroundColor(getResources().getColor(R.color.grey));
     }
 
     @Override
     public void onNonCenterPosition(boolean animate) {
         setActionButtonsVisible(false);
-
-        if (mCircle.getScaleX() != 1f) {
-            mCircle.animate()
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .setInterpolator(new DecelerateInterpolator())
-                    .start();
-        }
-        ((GradientDrawable) mCircle.getDrawable()).setColor(mFadedCircleColor);
         mName.setAlpha(mFadedTextAlpha);
+        setBackgroundColor(getResources().getColor(R.color.white));
     }
 
     public void setActionButtonsVisible(boolean visible) {

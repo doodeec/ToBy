@@ -3,7 +3,7 @@ package com.doodeec.tobycommon.model;
 /**
  * @author dusan.bartos
  */
-public interface IShoppingListItem extends IBaseDBObject {
+public interface IShoppingListItem extends IBaseDBObject, Comparable<IShoppingListItem> {
     void setAmount(double amount);
 
     double getAmount();
@@ -11,4 +11,8 @@ public interface IShoppingListItem extends IBaseDBObject {
     void setUnitType(UnitType type);
 
     UnitType getUnit();
+
+    void setChecked(boolean isChecked);
+
+    boolean getChecked();
 }

@@ -7,18 +7,19 @@ import android.view.ViewGroup;
 
 import com.doodeec.toby.R;
 import com.doodeec.tobycommon.model.IShoppingListItem;
+import com.doodeec.tobycommon.model.UnitType;
 
 import java.util.List;
 
 /**
  * @author dusan.bartos
  */
-public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
+public class SLItemAdapter extends WearableListView.Adapter {
     private final LayoutInflater mInflater;
     private List<IShoppingListItem> mShoppingListItems;
     private ActionButtonListener mListener;
 
-    public ShoppingListItemWearableAdapter(Context context, List<IShoppingListItem> list) {
+    public SLItemAdapter(Context context, List<IShoppingListItem> list) {
         mInflater = LayoutInflater.from(context);
         mShoppingListItems = list;
     }
@@ -29,7 +30,7 @@ public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
 
     @Override
     public WearableListView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new SLItemViewHolder(mInflater.inflate(R.layout.shopping_list, parent, false));
+        return new SLItemViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
     }
 
     @Override
@@ -39,7 +40,8 @@ public class ShoppingListItemWearableAdapter extends WearableListView.Adapter {
 
         viewHolder.setName(item.getName());
         viewHolder.setAmount(item.getAmount());
-        viewHolder.setUnit(item.getUnit().resource);
+        viewHolder.setChecked(item.getChecked());
+        viewHolder.setUnit(item.getUnit() == null ? UnitType.Undefined.resource : item.getUnit().resource);
         viewHolder.setTag(position);
         viewHolder.setActionBtnListener(mListener);
     }

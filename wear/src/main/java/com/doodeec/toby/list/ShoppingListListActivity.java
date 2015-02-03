@@ -11,6 +11,7 @@ import com.doodeec.toby.detail.ShoppingListDetailActivity;
 import com.doodeec.tobycommon.model.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
 import com.doodeec.tobycommon.model.ShoppingListItem;
+import com.doodeec.tobycommon.model.UnitType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,16 +36,37 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
         shoppingLists.add(new ShoppingList("Siesty zoznam"));
 
         List<IShoppingListItem> items = new ArrayList<>();
-        items.add(new ShoppingListItem("Prva polozka"));
-        items.add(new ShoppingListItem("Druha polozka"));
-        items.add(new ShoppingListItem("Tretia polozka"));
-        items.add(new ShoppingListItem("Stvrta polozka"));
-        items.add(new ShoppingListItem("Piata polozka"));
-        items.add(new ShoppingListItem("Siesta polozka"));
+
+        IShoppingListItem item = new ShoppingListItem("Prva polozka");
+        item.setAmount(4);
+        item.setUnitType(UnitType.Units);
+        IShoppingListItem item2 = new ShoppingListItem("Druha polozka");
+        item2.setAmount(10);
+        item2.setUnitType(UnitType.Units);
+        IShoppingListItem item3 = new ShoppingListItem("Tretia polozka");
+        item2.setAmount(5);
+        item2.setUnitType(UnitType.Liter);
+        IShoppingListItem item4 = new ShoppingListItem("Stvrta polozka");
+        item2.setAmount(1);
+        item2.setUnitType(UnitType.Kilo);
+        IShoppingListItem item5 = new ShoppingListItem("Piata polozka");
+        item2.setAmount(10);
+        item2.setUnitType(UnitType.Units);
+
+        items.add(item);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
         shoppingLists.get(0).setItems(items);
+        shoppingLists.get(1).setItems(items);
+        shoppingLists.get(2).setItems(items);
+        shoppingLists.get(3).setItems(items);
+        shoppingLists.get(4).setItems(items);
+        shoppingLists.get(5).setItems(items);
 
         mListView = (WearableListView) findViewById(R.id.list);
-        mListView.setAdapter(new ShoppingListWearableAdapter(this, shoppingLists));
+        mListView.setAdapter(new ShoppingListAdapter(this, shoppingLists));
         mListView.setClickListener(this);
     }
 

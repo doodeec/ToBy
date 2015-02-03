@@ -14,7 +14,7 @@
         android:layout_marginBottom="@dimen/padding"
         android:layout_width="20dp"
         android:layout_centerVertical="true"
-        android:src="@drawable/wl_circle"/>
+        android:src="@drawable/circle_green"/>
 
     <TextView
         android:id="@+id/name"

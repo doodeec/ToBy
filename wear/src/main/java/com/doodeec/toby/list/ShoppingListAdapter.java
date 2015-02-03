@@ -13,18 +13,18 @@ import java.util.List;
 /**
  * @author dusan.bartos
  */
-public class ShoppingListWearableAdapter extends WearableListView.Adapter {
+public class ShoppingListAdapter extends WearableListView.Adapter {
     private final LayoutInflater mInflater;
     private List<ShoppingList> mShoppingListList;
 
-    public ShoppingListWearableAdapter(Context context, List<ShoppingList> list) {
+    public ShoppingListAdapter(Context context, List<ShoppingList> list) {
         mInflater = LayoutInflater.from(context);
         mShoppingListList = list;
     }
 
     @Override
     public WearableListView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ShoppingListViewHolder(mInflater.inflate(R.layout.list_item, parent, false));
+        return new ShoppingListViewHolder(mInflater.inflate(R.layout.shopping_list, parent, false));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.doodeec.toby.detail;
 
+import android.graphics.Paint;
 import android.support.annotation.StringRes;
 import android.support.wearable.view.WearableListView;
 import android.view.View;
@@ -31,7 +32,11 @@ public class SLItemViewHolder extends WearableListView.ViewHolder {
     }
 
     public void setAmount(double amount) {
-        mAmount.setText(String.format("%.1f", amount));
+        if (amount > 0) {
+            mAmount.setText(String.format("%.1f", amount));
+        } else {
+            mAmount.setText("");
+        }
     }
 
     public void setUnit(@StringRes int unitResource) {
@@ -46,6 +51,14 @@ public class SLItemViewHolder extends WearableListView.ViewHolder {
         return (Integer) itemView.getTag();
     }
 
+    public void setChecked(boolean isCompleted) {
+        if (isCompleted) {
+            mName.setPaintFlags(mName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            mName.setPaintFlags(mName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
+    }
+
     public void showActionButtons() {
         mItemLayout.setActionButtonsVisible(true);
     }
@@ -54,8 +67,8 @@ public class SLItemViewHolder extends WearableListView.ViewHolder {
         mItemLayout.setActionButtonsVisible(false);
     }
 
-    public void setActionBtnListener(final ShoppingListItemWearableAdapter.ActionButtonListener listener) {
-        mItemLayout.setActionButtonListener(new ShoppingListItemWearableAdapter.ActionButtonListener() {
+    public void setActionBtnListener(final SLItemAdapter.ActionButtonListener listener) {
+        mItemLayout.setActionButtonListener(new SLItemAdapter.ActionButtonListener() {
             @Override
             public void onDeleteClicked(WearableListView.ViewHolder viewHolder) {
                 listener.onDeleteClicked(SLItemViewHolder.this);

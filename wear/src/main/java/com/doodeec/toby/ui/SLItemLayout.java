@@ -1,7 +1,6 @@
 package com.doodeec.toby.ui;
 
 import android.content.Context;
-import android.graphics.drawable.GradientDrawable;
 import android.support.wearable.view.WearableListView;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.doodeec.toby.R;
-import com.doodeec.toby.detail.ShoppingListItemWearableAdapter;
+import com.doodeec.toby.detail.SLItemAdapter;
 
 public class SLItemLayout extends RelativeLayout implements WearableListView.OnCenterProximityListener {
 
@@ -20,7 +19,7 @@ public class SLItemLayout extends RelativeLayout implements WearableListView.OnC
     private RelativeLayout mActionButtons;
     private RelativeLayout mActionButtonsOverlay;
     private TextView mName;
-    private ShoppingListItemWearableAdapter.ActionButtonListener mActionBtnListener;
+    private SLItemAdapter.ActionButtonListener mActionBtnListener;
 
     public SLItemLayout(Context context) {
         this(context, null);
@@ -35,7 +34,7 @@ public class SLItemLayout extends RelativeLayout implements WearableListView.OnC
         mFadedTextAlpha = 40 / 100f;
     }
 
-    public void setActionButtonListener(ShoppingListItemWearableAdapter.ActionButtonListener actionBtnListener) {
+    public void setActionButtonListener(SLItemAdapter.ActionButtonListener actionBtnListener) {
         mActionBtnListener = actionBtnListener;
     }
 
@@ -71,15 +70,12 @@ public class SLItemLayout extends RelativeLayout implements WearableListView.OnC
         // hide buttons and overlay initially
         mActionButtons.setTranslationX(getMeasuredWidth());
         mActionButtonsOverlay.setAlpha(0);
-
-        ((GradientDrawable) mDelete.getDrawable()).setColor(getResources().getColor(R.color.red));
-        ((GradientDrawable) mCheck.getDrawable()).setColor(getResources().getColor(R.color.green));
     }
 
     @Override
     public void onCenterPosition(boolean animate) {
         mName.setAlpha(1f);
-        setBackgroundColor(getResources().getColor(R.color.grey));
+        setBackgroundColor(getResources().getColor(R.color.light_grey));
     }
 
     @Override

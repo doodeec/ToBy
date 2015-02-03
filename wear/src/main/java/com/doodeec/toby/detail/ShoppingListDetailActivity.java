@@ -20,9 +20,13 @@ import java.util.List;
 
 public class ShoppingListDetailActivity extends Activity implements WearableListView.ClickListener, SLItemAdapter.ActionButtonListener {
 
+    private static int i = 0;
+
     private WearableListView mListView;
     private ShoppingList mShoppingList;
     private SLItemAdapter mItemsAdapter;
+    private NotificationManagerCompat mNotificationManager;
+    private int mShoppingListNotificationId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,9 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         mItemsAdapter.setActionButtonListener(this);
         mListView.setAdapter(mItemsAdapter);
         mListView.setClickListener(this);
+
+        mNotificationManager = NotificationManagerCompat.from(this);
+        mShoppingListNotificationId = ++i;
     }
 
     @Override
@@ -63,17 +70,27 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
 
         mShoppingList.getItems().remove(position);
 
+        // close detail if no item left
+        if (mShoppingList.getItems().size() == 0) {
+            finish();
+        }
+
         mItemsAdapter.notifyDataSetChanged();
         holder.hideActionButtons();
     }
 
     @Override
-    public void onCheckClicked(WearableListView.ViewHolder viewHolder) {
+    public void onCheckClicked(WearableListView.ViewHolder viewHolder, boolean checked) {
         SLItemViewHolder holder = (SLItemViewHolder) viewHolder;
         int position = holder.getTag();
 
-        mShoppingList.getItems().get(position).setChecked(true);
+        mShoppingList.getItems().get(position).setChecked(!checked);
         reorderItems();
+
+        // close detail if all items checked
+        if (!mShoppingList.hasActiveItems()) {
+            finish();
+        }
 
         mItemsAdapter.notifyDataSetChanged();
         holder.hideActionButtons();
@@ -85,8 +102,18 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         super.onStop();
     }
 
+    @Override
+    protected void onDestroy() {
+        hideNotification();
+        super.onDestroy();
+    }
+
     private void reorderItems() {
         Collections.sort(mShoppingList.getItems());
+    }
+
+    private void hideNotification() {
+        mNotificationManager.cancel(mShoppingListNotificationId);
     }
 
     private void showNotification() {
@@ -94,7 +121,6 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         PendingIntent actionPendingIntent = PendingIntent.getActivity(this, 0, actionIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
         NotificationCompat.Action continueAction = new NotificationCompat.Action.Builder(R.drawable.ic_done_white_48dp,
                 "Continue shopping", actionPendingIntent)
                 .build();
@@ -108,10 +134,10 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher))
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText(mShoppingList.getName())
-//                .setOngoing(true)
+                .setOngoing(mShoppingList.hasActiveItems())
                 .extend(wearOptions);
 
         // Build the notification and show it
-        notificationManager.notify(123456789, notificationBuilder.build());
+        mNotificationManager.notify(mShoppingListNotificationId, notificationBuilder.build());
     }
 }

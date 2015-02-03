@@ -54,6 +54,6 @@ public class SLItemAdapter extends WearableListView.Adapter {
     public interface ActionButtonListener {
         void onDeleteClicked(WearableListView.ViewHolder viewHolder);
 
-        void onCheckClicked(WearableListView.ViewHolder viewHolder);
+        void onCheckClicked(WearableListView.ViewHolder viewHolder, boolean checked);
     }
 }

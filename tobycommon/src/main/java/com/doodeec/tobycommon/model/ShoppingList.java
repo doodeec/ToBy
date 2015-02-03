@@ -58,6 +58,13 @@ public class ShoppingList {
         return category;
     }
 
+    public boolean hasActiveItems() {
+        for (IShoppingListItem item : items) {
+            if (!item.getChecked()) return true;
+        }
+        return false;
+    }
+
     public List<IShoppingListItem> getItems() {
         return items;
     }

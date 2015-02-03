@@ -14,6 +14,7 @@ import com.doodeec.toby.detail.SLItemAdapter;
 public class SLItemLayout extends RelativeLayout implements WearableListView.OnCenterProximityListener {
 
     private final float mFadedTextAlpha;
+    private boolean mIsChecked;
     private ImageView mDelete;
     private ImageView mCheck;
     private RelativeLayout mActionButtons;
@@ -60,7 +61,7 @@ public class SLItemLayout extends RelativeLayout implements WearableListView.OnC
             @Override
             public void onClick(View v) {
                 if (mActionBtnListener != null) {
-                    mActionBtnListener.onCheckClicked(null);
+                    mActionBtnListener.onCheckClicked(null, mIsChecked);
                 }
             }
         });
@@ -70,6 +71,11 @@ public class SLItemLayout extends RelativeLayout implements WearableListView.OnC
         // hide buttons and overlay initially
         mActionButtons.setTranslationX(getMeasuredWidth());
         mActionButtonsOverlay.setAlpha(0);
+    }
+
+    public void setCheckedState(boolean isChecked) {
+        mIsChecked = isChecked;
+        mCheck.setImageResource(isChecked ? R.drawable.ic_undo_white_36dp : R.drawable.ic_done_white_36dp);
     }
 
     @Override

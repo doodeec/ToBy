@@ -57,6 +57,7 @@ public class SLItemViewHolder extends WearableListView.ViewHolder {
         } else {
             mName.setPaintFlags(mName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
         }
+        mItemLayout.setCheckedState(isCompleted);
     }
 
     public void showActionButtons() {
@@ -75,8 +76,8 @@ public class SLItemViewHolder extends WearableListView.ViewHolder {
             }
 
             @Override
-            public void onCheckClicked(WearableListView.ViewHolder viewHolder) {
-                listener.onCheckClicked(SLItemViewHolder.this);
+            public void onCheckClicked(WearableListView.ViewHolder viewHolder, boolean checked) {
+                listener.onCheckClicked(SLItemViewHolder.this, checked);
             }
         });
     }

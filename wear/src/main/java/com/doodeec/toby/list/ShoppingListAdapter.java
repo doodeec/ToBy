@@ -33,6 +33,7 @@ public class ShoppingListAdapter extends WearableListView.Adapter {
         ShoppingListViewHolder viewHolder = (ShoppingListViewHolder) holder;
 
         viewHolder.setName(shoppingList.getName());
+        viewHolder.setCompleted(!shoppingList.hasActiveItems());
         viewHolder.setTag(position);
     }
 

@@ -1,5 +1,6 @@
 package com.doodeec.toby.list;
 
+import android.graphics.Paint;
 import android.support.wearable.view.WearableListView;
 import android.view.View;
 import android.widget.TextView;
@@ -21,6 +22,14 @@ public class ShoppingListViewHolder extends WearableListView.ViewHolder {
 
     public void setName(String name) {
         mName.setText(name);
+    }
+
+    public void setCompleted(boolean isCompleted) {
+        if (isCompleted) {
+            mName.setPaintFlags(mName.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+        } else {
+            mName.setPaintFlags(mName.getPaintFlags() & (~Paint.STRIKE_THRU_TEXT_FLAG));
+        }
     }
 
     public void setTag(Integer tag) {

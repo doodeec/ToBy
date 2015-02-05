@@ -14,15 +14,21 @@ import com.doodeec.tobycommon.model.ShoppingListItem;
 import com.doodeec.tobycommon.model.UnitType;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataMapItem;
 import com.google.android.gms.wearable.Wearable;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingListListActivity extends Activity implements WearableListView.ClickListener,
         DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+
+    private static final String TAG = "WEARABLE_TOBY";
 
     public static final String LIST_ID_EXTRA = "itemId";
     public static List<ShoppingList> shoppingLists;
@@ -43,8 +49,9 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
                 .addOnConnectionFailedListener(this)
                 .addApi(Wearable.API)
                 .build();
-
         mGAClient.connect();
+
+        Log.d(TAG, "Connecting...");
 
         mListView = (WearableListView) findViewById(R.id.list);
         mListView.setAdapter(new ShoppingListAdapter(this, shoppingLists));
@@ -53,43 +60,68 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
 
     @Override
     public void onConnected(Bundle bundle) {
+        Log.d(TAG, "Connected");
         Wearable.DataApi.addListener(mGAClient, this);
         //TODO sync data
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d("TOBY", "Connection failed");
+        Log.d(TAG, "Connection failed");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
-        Log.d("TOBY", "Connection failed");
+        Log.d(TAG, "Connection failed");
+        Wearable.DataApi.removeListener(mGAClient, this);
     }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
-        Log.d("TOBY", "Data changed");
+        Log.d(TAG, "onDataChanged");
+        Log.d(TAG, "data buffer: " + dataEvents);
+
+        for (DataEvent event : dataEvents) {
+            if (event.getType() == DataEvent.TYPE_CHANGED) {
+                DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
+                Asset word = dataMapItem.getDataMap()
+                        .getAsset("word");
+
+                InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
+                        mGAClient, word).await().getInputStream();
+
+                if (assetInputStream == null) {
+                    Log.w(TAG, "Requested an unknown Asset.");
+                    break;
+                }
+                Log.d(TAG, assetInputStream.toString());
+            } else if (event.getType() == DataEvent.TYPE_DELETED) {
+                Log.d(TAG, "DataItem Deleted " + event.getDataItem().toString());
+            } else {
+                Log.d(TAG, "Unknown data event type = " + event.getType());
+            }
+        }
     }
 
     @Override
     public void onClick(WearableListView.ViewHolder viewHolder) {
-        Log.d("WEARABLE_TOBY", "shoppingList list item clicked");
+        Log.d(TAG, "shoppingList list item clicked");
         Intent detailIntent = new Intent(this, ShoppingListDetailActivity.class);
         detailIntent.putExtra(LIST_ID_EXTRA, ((ShoppingListViewHolder) viewHolder).getTag());
         startActivity(detailIntent);
     }
 
     @Override
-    public void onTopEmptyRegionClick() {
-        //do nothing
-    }
-
-    @Override
     protected void onDestroy() {
+        Log.d(TAG, "remove listener");
         super.onDestroy();
         Wearable.DataApi.removeListener(mGAClient, this);
         mGAClient.disconnect();
+    }
+
+    @Override
+    public void onTopEmptyRegionClick() {
+        //do nothing
     }
 
     private void generateMockData() {

@@ -12,34 +12,36 @@ import com.google.android.gms.wearable.WearableListenerService;
  */
 public class WearService extends WearableListenerService {
 
+    private static final String TAG = "TOBY";
+
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d("TOBY", "WEAR create");
+        Log.d(TAG, "WEAR create");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d("TOBY", "WEAR destroy");
+        Log.d(TAG, "WEAR destroy");
     }
 
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         super.onDataChanged(dataEvents);
-        Log.d("TOBY", "WEAR Data changed " );
+        Log.d(TAG, "WEAR Data changed " + dataEvents);
     }
 
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         super.onMessageReceived(messageEvent);
-        Log.d("TOBY", "WEAR Message " + messageEvent.getPath());
+        Log.d(TAG, "WEAR Message " + messageEvent);
     }
 
     @Override
     public void onPeerConnected(Node peer) {
         super.onPeerConnected(peer);
-        Log.d("TOBY", "WEAR Connected ");
+        Log.d(TAG, "WEAR Connected " + peer);
 
         //TODO sync data
     }
@@ -47,6 +49,6 @@ public class WearService extends WearableListenerService {
     @Override
     public void onPeerDisconnected(Node peer) {
         super.onPeerDisconnected(peer);
-        Log.d("TOBY", "WEAR Disconnected");
+        Log.d(TAG, "WEAR Disconnected " + peer);
     }
 }

@@ -14,7 +14,7 @@ import com.google.android.gms.wearable.WearableListenerService;
  */
 public class DataSyncService extends WearableListenerService {
 
-    private static final String TAG = "WEARABLE_TOBY";
+    private static final String TAG = "WEARABLE_TOBY_SERVICE";
 
     GoogleApiClient mGoogleApiClient;
 
@@ -46,11 +46,5 @@ public class DataSyncService extends WearableListenerService {
     @Override
     public void onPeerDisconnected(Node peer) {
         Log.d(TAG, "onPeerDisconnected: " + peer);
-    }
-
-    @Override
-    public void onDestroy() {
-        mGoogleApiClient.disconnect();
-        super.onDestroy();
     }
 }

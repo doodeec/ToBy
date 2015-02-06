@@ -2,6 +2,7 @@ package com.doodeec.toby.list;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.wearable.view.WearableListView;
 import android.util.Log;
@@ -12,16 +13,24 @@ import com.doodeec.tobycommon.model.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
 import com.doodeec.tobycommon.model.ShoppingListItem;
 import com.doodeec.tobycommon.model.UnitType;
+import com.doodeec.tobycommon.sync.DataSync;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.Asset;
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageApi;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +44,7 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
 
     private WearableListView mListView;
 
-    private GoogleApiClient mGAClient;
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,14 +53,11 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
 
         generateMockData();
 
-        mGAClient = new GoogleApiClient.Builder(this)
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
                 .addOnConnectionFailedListener(this)
                 .addApi(Wearable.API)
                 .build();
-        mGAClient.connect();
-
-        Log.d(TAG, "Connecting...");
 
         mListView = (WearableListView) findViewById(R.id.list);
         mListView.setAdapter(new ShoppingListAdapter(this, shoppingLists));
@@ -59,21 +65,37 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
     }
 
     @Override
+    protected void onResume() {
+        Log.d(TAG, "Connecting");
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.d(TAG, "Disconnecting");
+        super.onPause();
+        Wearable.DataApi.removeListener(mGoogleApiClient, this);
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
     public void onConnected(Bundle bundle) {
         Log.d(TAG, "Connected");
-        Wearable.DataApi.addListener(mGAClient, this);
-        //TODO sync data
+        Wearable.DataApi.addListener(mGoogleApiClient, this);
+
+        // request data sync
+        new SyncDataTask().execute();
     }
 
     @Override
     public void onConnectionSuspended(int i) {
-        Log.d(TAG, "Connection failed");
+        Log.d(TAG, "Connection suspended");
     }
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
         Log.d(TAG, "Connection failed");
-        Wearable.DataApi.removeListener(mGAClient, this);
     }
 
     @Override
@@ -88,13 +110,20 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
                         .getAsset("word");
 
                 InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
-                        mGAClient, word).await().getInputStream();
+                        mGoogleApiClient, word).await().getInputStream();
 
-                if (assetInputStream == null) {
-                    Log.w(TAG, "Requested an unknown Asset.");
-                    break;
+                BufferedReader r = new BufferedReader(new InputStreamReader(assetInputStream));
+                StringBuilder total = new StringBuilder();
+                try {
+                    String line;
+                    while ((line = r.readLine()) != null) {
+                        total.append(line);
+                    }
+                } catch (IOException e) {
+                    Log.e(TAG, "exception");
                 }
-                Log.d(TAG, assetInputStream.toString());
+
+                Log.d(TAG, "Result data " + total.toString());
             } else if (event.getType() == DataEvent.TYPE_DELETED) {
                 Log.d(TAG, "DataItem Deleted " + event.getDataItem().toString());
             } else {
@@ -112,16 +141,44 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
     }
 
     @Override
-    protected void onDestroy() {
-        Log.d(TAG, "remove listener");
-        super.onDestroy();
-        Wearable.DataApi.removeListener(mGAClient, this);
-        mGAClient.disconnect();
-    }
-
-    @Override
     public void onTopEmptyRegionClick() {
         //do nothing
+    }
+
+    /**
+     * Async task which requests data sync from device using message api
+     */
+    class SyncDataTask extends AsyncTask<Void, Void, Void> {
+        @Override
+        protected Void doInBackground(Void... params) {
+            for (Node node: getNodes()) {
+                sendDataSyncRequestToNode(node);
+            }
+            return null;
+        }
+
+        private List<Node> getNodes() {
+            NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
+            return nodes.getNodes();
+        }
+
+        private void sendDataSyncRequestToNode(Node node) {
+            Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(),
+                    DataSync.SYNC_REQUEST_PATH, new byte[0])
+                    .setResultCallback(
+                            new ResultCallback<MessageApi.SendMessageResult>() {
+                                @Override
+                                public void onResult(MessageApi.SendMessageResult sendMessageResult) {
+                                    if (!sendMessageResult.getStatus().isSuccess()) {
+                                        Log.e(TAG, "Failed to send message with status code: "
+                                                + sendMessageResult.getStatus().getStatusCode());
+                                    } else {
+                                        Log.d(TAG, "Sync request was sent");
+                                    }
+                                }
+                            }
+                    );
+        }
     }
 
     private void generateMockData() {

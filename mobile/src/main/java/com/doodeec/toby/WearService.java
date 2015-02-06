@@ -2,6 +2,7 @@ package com.doodeec.toby;
 
 import android.util.Log;
 
+import com.doodeec.toby.appstate.AppData;
 import com.doodeec.tobycommon.sync.DataSync;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -62,18 +63,18 @@ public class WearService extends WearableListenerService {
     }
 
     public void sendData() {
-        String word = "Hatatitla";
-        Asset asset = Asset.createFromBytes(word.getBytes());
+        String lists = AppData.getInstance().getShoppingListsAsJSON().toString();
+        Asset shoppingListsAsset = Asset.createFromBytes(lists.getBytes());
 
-        PutDataMapRequest dataMap = PutDataMapRequest.create("/dataMapPath");
-        dataMap.getDataMap().putAsset("word", asset);
+        PutDataMapRequest dataMap = PutDataMapRequest.create(DataSync.SYNC_LIST_DATA);
+        dataMap.getDataMap().putAsset(DataSync.SYNC_SHOPPING_LIST, shoppingListsAsset);
         PutDataRequest request = dataMap.asPutDataRequest();
-        Log.d("TOBY", "Send word to wearable");
+        Log.d("TOBY", "Send lists to wearable " + lists);
         Wearable.DataApi.putDataItem(mGoogleApiClient, request)
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
-                        Log.d("TOBY", "Sending word was successful: " + dataItemResult.getStatus()
+                        Log.d("TOBY", "Sending shopping lists successful: " + dataItemResult.getStatus()
                                 .isSuccess());
                     }
                 });

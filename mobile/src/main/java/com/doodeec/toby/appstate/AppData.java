@@ -16,6 +16,10 @@ import com.doodeec.toby.dbstorage.ShopCategoryDBEntry;
 import com.doodeec.toby.dbstorage.ShopDBEntry;
 import com.doodeec.toby.dbstorage.ShoppingListDBEntry;
 import com.doodeec.tobycommon.model.BaseObservable;
+import com.doodeec.tobycommon.model.UnitType;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
+
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +40,10 @@ public class AppData {
             synchronized (AppData.class) {
                 if (instance == null) {
                     instance = createInstance();
+
                     instance.generateDefaultCategories();
                     instance.generateDefaultShop();
+                    instance.generateMockData();
                 }
             }
         }
@@ -206,6 +212,14 @@ public class AppData {
         return allShoppingListItems.getData();
     }
 
+    public JSONArray getShoppingListsAsJSON() {
+        JSONArray lists = new JSONArray();
+        for (ShoppingList list: getShoppingLists()) {
+            lists.put(list.toJSON());
+        }
+        return lists;
+    }
+
     public ShopCategory getCategoryById(int id) {
         for (ShopCategory category : getCategories()) {
             if (category.getId() == id) return category;
@@ -258,5 +272,44 @@ public class AppData {
         this.allCategories.addSingleItem(new ShopCategory("Obuv"));
         this.allCategories.addSingleItem(new ShopCategory("Drogéria"));
         this.allCategories.addSingleItem(new ShopCategory("Nábytok"));
+    }
+
+    private void generateMockData() {
+        this.allShoppingLists.addSingleItem(new ShoppingList("Prvy zoznam"));
+        this.allShoppingLists.addSingleItem(new ShoppingList("Druhy zoznam"));
+        this.allShoppingLists.addSingleItem(new ShoppingList("Treti zoznam"));
+        this.allShoppingLists.addSingleItem(new ShoppingList("Stvrty zoznam"));
+        this.allShoppingLists.addSingleItem(new ShoppingList("Piaty zoznam"));
+        this.allShoppingLists.addSingleItem(new ShoppingList("Siesty zoznam"));
+
+        List<IShoppingListItem> items = new ArrayList<>();
+
+        IShoppingListItem item = new ShoppingListItem("Prva polozka");
+        item.setAmount(4);
+        item.setUnitType(UnitType.Units);
+        IShoppingListItem item2 = new ShoppingListItem("Druha polozka");
+        item2.setAmount(10);
+        item2.setUnitType(UnitType.Units);
+        IShoppingListItem item3 = new ShoppingListItem("Tretia polozka");
+        item2.setAmount(5);
+        item2.setUnitType(UnitType.Liter);
+        IShoppingListItem item4 = new ShoppingListItem("Stvrta polozka");
+        item2.setAmount(1);
+        item2.setUnitType(UnitType.Kilo);
+        IShoppingListItem item5 = new ShoppingListItem("Piata polozka");
+        item2.setAmount(10);
+        item2.setUnitType(UnitType.Units);
+
+        items.add(item);
+        items.add(item2);
+        items.add(item3);
+        items.add(item4);
+        items.add(item5);
+        this.allShoppingLists.getData().get(0).setItems(items);
+        this.allShoppingLists.getData().get(1).setItems(items);
+        this.allShoppingLists.getData().get(2).setItems(items);
+        this.allShoppingLists.getData().get(3).setItems(items);
+        this.allShoppingLists.getData().get(4).setItems(items);
+        this.allShoppingLists.getData().get(5).setItems(items);
     }
 }

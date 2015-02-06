@@ -1,5 +1,15 @@
 package com.doodeec.tobycommon.model;
 
+import android.util.Log;
+
+import com.doodeec.tobycommon.model.interfaces.IShop;
+import com.doodeec.tobycommon.model.interfaces.IShopCategory;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -10,6 +20,11 @@ import java.util.List;
  * @author Dusan Bartos
  */
 public class ShoppingList {
+
+    protected static final String KEY_ID = "id";
+    protected static final String KEY_NAME = "name";
+    protected static final String KEY_COMPLETED = "completed";
+    protected static final String KEY_ITEMS = "items";
 
     protected Integer id;
     protected IShopCategory category;
@@ -28,6 +43,17 @@ public class ShoppingList {
 
     public ShoppingList(String name) {
         this.name = name;
+    }
+
+    public ShoppingList(JSONObject object) {
+        try {
+            id = object.getInt(KEY_ID);
+            name = object.getString(KEY_NAME);
+            completed = object.getBoolean(KEY_COMPLETED);
+            items = deserializeItems(object.getString(KEY_ITEMS));
+        } catch (JSONException e){
+            Log.e("Shopping list JSON exception", e.getMessage());
+        }
     }
 
     public String getName() {
@@ -82,13 +108,38 @@ public class ShoppingList {
     }
 
     protected static String serializeItems(List<IShoppingListItem> items) {
-        //TODO fill string
-        return "";
+        JSONArray itemsArray = new JSONArray();
+        for (IShoppingListItem listItem: items) {
+            itemsArray.put(listItem.toJSON());
+        }
+        return itemsArray.toString();
     }
 
     protected static List<IShoppingListItem> deserializeItems(String serializedItems) {
         List<IShoppingListItem> items = new ArrayList<>();
-        //TODO fill list
+
+        try {
+            JSONArray itemsArray = new JSONArray(serializedItems);
+            for (int i = 0; i < itemsArray.length(); i++) {
+                items.add(new ShoppingListItem(itemsArray.getJSONObject(i)));
+            }
+        } catch (JSONException e) {
+            Log.e("Shopping list items", "Parsing shopping list items failed" + e.getMessage());
+        }
+
         return items;
+    }
+
+    public JSONObject toJSON() {
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put(KEY_ID, id);
+            jsonObject.put(KEY_NAME, name);
+            jsonObject.put(KEY_COMPLETED, completed);
+            jsonObject.put(KEY_ITEMS, serializeItems(items));
+        } catch (JSONException e) {
+            Log.e("Shopping list JSON exception", e.getLocalizedMessage());
+        }
+        return jsonObject;
     }
 }

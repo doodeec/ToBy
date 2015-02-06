@@ -22,6 +22,11 @@ public class ShoppingListAdapter extends WearableListView.Adapter {
         mShoppingListList = list;
     }
 
+    public void setLists(List<ShoppingList> list) {
+        mShoppingListList = list;
+        notifyDataSetChanged();
+    }
+
     @Override
     public WearableListView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ShoppingListViewHolder(mInflater.inflate(R.layout.shopping_list, parent, false));

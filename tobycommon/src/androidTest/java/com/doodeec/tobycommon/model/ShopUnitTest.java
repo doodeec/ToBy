@@ -1,5 +1,7 @@
 package com.doodeec.tobycommon.model;
 
+import com.doodeec.tobycommon.model.interfaces.IShopCategory;
+
 import org.hamcrest.core.IsNull;
 import org.junit.After;
 import org.junit.Before;

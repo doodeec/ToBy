@@ -1,5 +1,8 @@
 package com.doodeec.tobycommon.model;
 
+import com.doodeec.tobycommon.model.interfaces.IShop;
+import com.doodeec.tobycommon.model.interfaces.IShopCategory;
+
 /**
  * Shop object
  *

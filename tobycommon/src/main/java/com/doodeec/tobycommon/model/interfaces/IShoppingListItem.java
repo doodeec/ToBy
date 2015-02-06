@@ -1,4 +1,8 @@
-package com.doodeec.tobycommon.model;
+package com.doodeec.tobycommon.model.interfaces;
+
+import com.doodeec.tobycommon.model.UnitType;
+
+import org.json.JSONObject;
 
 /**
  * @author dusan.bartos
@@ -15,4 +19,6 @@ public interface IShoppingListItem extends IBaseDBObject, Comparable<IShoppingLi
     void setChecked(boolean isChecked);
 
     boolean getChecked();
+
+    JSONObject toJSON();
 }

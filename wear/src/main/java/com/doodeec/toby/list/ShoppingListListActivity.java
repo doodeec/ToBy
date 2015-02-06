@@ -8,11 +8,9 @@ import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
 import com.doodeec.toby.R;
+import com.doodeec.toby.data.Parser;
 import com.doodeec.toby.detail.ShoppingListDetailActivity;
-import com.doodeec.tobycommon.model.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
-import com.doodeec.tobycommon.model.ShoppingListItem;
-import com.doodeec.tobycommon.model.UnitType;
 import com.doodeec.tobycommon.sync.DataSync;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -27,8 +25,9 @@ import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.Wearable;
 
+import org.json.JSONArray;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -40,18 +39,16 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
     private static final String TAG = "WEARABLE_TOBY";
 
     public static final String LIST_ID_EXTRA = "itemId";
-    public static List<ShoppingList> shoppingLists;
+    public static List<ShoppingList> shoppingLists = new ArrayList<>();
 
     private WearableListView mListView;
-
+    private ShoppingListAdapter mAdapter;
     private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_lists_activity);
-
-        generateMockData();
 
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
@@ -60,7 +57,8 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
                 .build();
 
         mListView = (WearableListView) findViewById(R.id.list);
-        mListView.setAdapter(new ShoppingListAdapter(this, shoppingLists));
+        mAdapter = new ShoppingListAdapter(this, shoppingLists);
+        mListView.setAdapter(mAdapter);
         mListView.setClickListener(this);
     }
 
@@ -106,24 +104,31 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
-                Asset word = dataMapItem.getDataMap()
-                        .getAsset("word");
+                Asset shoppingLists = dataMapItem.getDataMap().getAsset(DataSync.SYNC_SHOPPING_LIST);
 
                 InputStream assetInputStream = Wearable.DataApi.getFdForAsset(
-                        mGoogleApiClient, word).await().getInputStream();
+                        mGoogleApiClient, shoppingLists).await().getInputStream();
 
                 BufferedReader r = new BufferedReader(new InputStreamReader(assetInputStream));
-                StringBuilder total = new StringBuilder();
                 try {
+                    StringBuilder total = new StringBuilder();
                     String line;
                     while ((line = r.readLine()) != null) {
                         total.append(line);
                     }
-                } catch (IOException e) {
-                    Log.e(TAG, "exception");
-                }
 
-                Log.d(TAG, "Result data " + total.toString());
+                    final List<ShoppingList> lists = Parser.parseShoppingLists(new JSONArray(total.toString()));
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            ShoppingListListActivity.shoppingLists = lists;
+                            mAdapter.setLists(lists);
+                        }
+                    });
+                    Log.d(TAG, "Retrieved lists " + lists.toString());
+                } catch (Exception e) {
+                    Log.e(TAG, "exception " + e.getMessage());
+                }
             } else if (event.getType() == DataEvent.TYPE_DELETED) {
                 Log.d(TAG, "DataItem Deleted " + event.getDataItem().toString());
             } else {
@@ -179,46 +184,5 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
                             }
                     );
         }
-    }
-
-    private void generateMockData() {
-        shoppingLists = new ArrayList<>();
-        shoppingLists.add(new ShoppingList("Prvy zoznam"));
-        shoppingLists.add(new ShoppingList("Druhy zoznam"));
-        shoppingLists.add(new ShoppingList("Treti zoznam"));
-        shoppingLists.add(new ShoppingList("Stvrty zoznam"));
-        shoppingLists.add(new ShoppingList("Piaty zoznam"));
-        shoppingLists.add(new ShoppingList("Siesty zoznam"));
-
-        List<IShoppingListItem> items = new ArrayList<>();
-
-        IShoppingListItem item = new ShoppingListItem("Prva polozka");
-        item.setAmount(4);
-        item.setUnitType(UnitType.Units);
-        IShoppingListItem item2 = new ShoppingListItem("Druha polozka");
-        item2.setAmount(10);
-        item2.setUnitType(UnitType.Units);
-        IShoppingListItem item3 = new ShoppingListItem("Tretia polozka");
-        item2.setAmount(5);
-        item2.setUnitType(UnitType.Liter);
-        IShoppingListItem item4 = new ShoppingListItem("Stvrta polozka");
-        item2.setAmount(1);
-        item2.setUnitType(UnitType.Kilo);
-        IShoppingListItem item5 = new ShoppingListItem("Piata polozka");
-        item2.setAmount(10);
-        item2.setUnitType(UnitType.Units);
-
-        items.add(item);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
-        items.add(item5);
-        shoppingLists.get(0).setItems(items);
-        shoppingLists.get(1).setItems(items);
-        shoppingLists.get(2).setItems(items);
-        shoppingLists.get(3).setItems(items);
-        shoppingLists.get(4).setItems(items);
-        shoppingLists.get(5).setItems(items);
-
     }
 }

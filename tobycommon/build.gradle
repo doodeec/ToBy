@@ -53,6 +53,5 @@ task copyResources(type: Copy) {
 // test with JUnit task (define 'clean assembleDebugTest copyResources enableJUnit' as before task)
 
 dependencies {
-    compile 'junit:junit:4.12'
-    compile 'org.hamcrest:hamcrest-core:1.3'
+    androidTestCompile 'junit:junit:4.12'
 }

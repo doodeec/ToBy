@@ -1,4 +1,4 @@
-package com.doodeec.tobycommon.model;
+package com.doodeec.tobycommon.model.interfaces;
 
 /**
  * @author dusan.bartos

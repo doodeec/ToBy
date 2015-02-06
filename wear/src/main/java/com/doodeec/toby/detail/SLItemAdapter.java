@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.doodeec.toby.R;
-import com.doodeec.tobycommon.model.IShoppingListItem;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 import com.doodeec.tobycommon.model.UnitType;
 
 import java.util.List;

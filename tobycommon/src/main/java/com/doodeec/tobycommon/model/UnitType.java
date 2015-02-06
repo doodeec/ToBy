@@ -28,4 +28,12 @@ public enum UnitType {
         this.typeKey = typeKey;
         this.resource = resource;
     }
+
+    public static UnitType forTypeKey(String typeKey) {
+        if (typeKey == null) return Undefined;
+        for (UnitType unitType: values()) {
+            if (unitType.typeKey.equals(typeKey)) return unitType;
+        }
+        return Undefined;
+    }
 }

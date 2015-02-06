@@ -11,7 +11,7 @@ import android.support.wearable.view.WearableListView;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.list.ShoppingListListActivity;
-import com.doodeec.tobycommon.model.IShoppingListItem;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
 
 import java.util.ArrayList;

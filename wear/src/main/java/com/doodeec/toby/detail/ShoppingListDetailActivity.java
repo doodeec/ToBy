@@ -79,13 +79,15 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
 
     @Override
     protected void onPause() {
-        String list = mShoppingList.toJSON().toString();
-        Asset shoppingListAsset = Asset.createFromBytes(list.getBytes());
+        if (mGoogleApiClient.isConnected()) {
+            String list = mShoppingList.toJSON().toString();
+            Asset shoppingListAsset = Asset.createFromBytes(list.getBytes());
 
-        PutDataMapRequest dataMap = PutDataMapRequest.create(DataSync.SYNC_SYNC_LIST);
-        dataMap.getDataMap().putAsset(DataSync.SYNC_SHOPPING_LIST, shoppingListAsset);
-        Log.d(TAG, "Sync list to device " + list);
-        Wearable.DataApi.putDataItem(mGoogleApiClient, dataMap.asPutDataRequest());
+            PutDataMapRequest dataMap = PutDataMapRequest.create(DataSync.SYNC_SYNC_LIST);
+            dataMap.getDataMap().putAsset(DataSync.SYNC_SHOPPING_LIST, shoppingListAsset);
+            Log.d(TAG, "Sync list to device " + list);
+            Wearable.DataApi.putDataItem(mGoogleApiClient, dataMap.asPutDataRequest());
+        }
 
         Log.d(TAG, "Disconnecting");
         super.onPause();

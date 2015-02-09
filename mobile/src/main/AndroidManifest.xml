@@ -35,11 +35,11 @@
             android:label="@string/title_activity_shopping_item_list" />
 
         <activity
-            android:name=".views.shoppinglist.ShoppingListListActivity"
+            android:name=".views.shoppinglist.list.ShoppingListListActivity"
             android:label="@string/title_activity_shopping_list_list" />
 
         <activity
-            android:name=".views.shoppinglist.detail.ShoppingListDetailActivity"
+            android:name=".views.shoppinglist.detail.SLDetailActivity"
             android:label="@string/title_activity_shopping_list_detail" />
     </application>
 

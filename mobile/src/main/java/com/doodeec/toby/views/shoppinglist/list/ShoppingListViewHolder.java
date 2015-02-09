@@ -1,4 +1,4 @@
-package com.doodeec.toby.views.shoppinglist;
+package com.doodeec.toby.views.shoppinglist.list;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -16,6 +16,8 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
 
     public ShoppingListViewHolder(View view) {
         super(view);
+
+        //TODO butterknife
 
         name = (TextView) view.findViewById(R.id.list_name);
         shopName = (TextView) view.findViewById(R.id.shop_name);

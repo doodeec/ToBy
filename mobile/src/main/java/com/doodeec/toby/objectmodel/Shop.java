@@ -18,12 +18,6 @@ public class Shop extends com.doodeec.tobycommon.model.Shop implements IDbSavabl
         this.name = name;
     }
 
-    public Shop(String name, com.doodeec.tobycommon.model.ShopCategory category) {
-        super(name, category);
-        this.name = name;
-        this.category = category;
-    }
-
     public Shop(Cursor cursor) {
         this.name = cursor.getString(cursor.getColumnIndex(ShopDBEntry.COL_name));
         this.id = cursor.getInt(cursor.getColumnIndex(ShopDBEntry.COL_id));

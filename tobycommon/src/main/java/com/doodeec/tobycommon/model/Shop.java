@@ -43,6 +43,11 @@ public class Shop implements IShop {
     }
 
     @Override
+    public void setCategory(IShopCategory category) {
+        this.category = category;
+    }
+
+    @Override
     public IShopCategory getCategory() {
         return category;
     }

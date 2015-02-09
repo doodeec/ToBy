@@ -6,4 +6,6 @@ package com.doodeec.tobycommon.model.interfaces;
 public interface IShop extends IBaseDBObject {
 
     IShopCategory getCategory();
+
+    void setCategory(IShopCategory category);
 }

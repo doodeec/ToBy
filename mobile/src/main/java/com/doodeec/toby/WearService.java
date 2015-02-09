@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.doodeec.toby.appstate.AppData;
 import com.doodeec.toby.objectmodel.ShoppingList;
+import com.doodeec.tobycommon.parser.Parser;
 import com.doodeec.tobycommon.sync.DataSync;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -64,8 +65,9 @@ public class WearService extends WearableListenerService {
                     }
 
                     // parse and update
-                    ShoppingList shList = new ShoppingList(new JSONObject(total.toString()));
-                    for (ShoppingList list: AppData.getInstance().getShoppingLists()) {
+                    com.doodeec.tobycommon.model.ShoppingList shList =
+                            Parser.parseShoppingList(new JSONObject(total.toString()));
+                    for (ShoppingList list : AppData.getInstance().getShoppingLists()) {
                         if (list.getId().equals(shList.getId())) list.updateFrom(shList);
                     }
                     Log.d(TAG, "Retrieved list " + total.toString());
@@ -85,6 +87,7 @@ public class WearService extends WearableListenerService {
         Log.d(TAG, "WEAR Message " + messageEvent);
 
         switch (messageEvent.getPath()) {
+            // wearable requested data asset
             case DataSync.SYNC_REQUEST_PATH:
                 sendData();
                 break;
@@ -111,12 +114,12 @@ public class WearService extends WearableListenerService {
         PutDataMapRequest dataMap = PutDataMapRequest.create(DataSync.SYNC_LIST_DATA);
         dataMap.getDataMap().putAsset(DataSync.SYNC_SHOPPING_LIST, shoppingListsAsset);
         PutDataRequest request = dataMap.asPutDataRequest();
-        Log.d("TOBY", "Send lists to wearable " + lists);
+        Log.d(TAG, "Send lists to wearable " + lists);
         Wearable.DataApi.putDataItem(mGoogleApiClient, request)
                 .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
                     @Override
                     public void onResult(DataApi.DataItemResult dataItemResult) {
-                        Log.d("TOBY", "Sending shopping lists successful: " + dataItemResult.getStatus()
+                        Log.d(TAG, "Sending shopping lists successful: " + dataItemResult.getStatus()
                                 .isSuccess());
                     }
                 });

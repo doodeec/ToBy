@@ -8,7 +8,7 @@ import android.support.wearable.view.WearableListView;
 import android.util.Log;
 
 import com.doodeec.toby.R;
-import com.doodeec.toby.data.Parser;
+import com.doodeec.tobycommon.parser.Parser;
 import com.doodeec.toby.detail.ShoppingListDetailActivity;
 import com.doodeec.tobycommon.model.ShoppingList;
 import com.doodeec.tobycommon.sync.DataSync;

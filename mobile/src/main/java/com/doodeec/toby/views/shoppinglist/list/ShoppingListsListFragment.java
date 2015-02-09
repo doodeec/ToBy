@@ -1,4 +1,4 @@
-package com.doodeec.toby.views.shoppinglist;
+package com.doodeec.toby.views.shoppinglist.list;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,7 +16,7 @@ import com.doodeec.toby.appstate.AppData;
 import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.views.FloatingActionButton;
 import com.doodeec.toby.views.RecyclerItemClickListener;
-import com.doodeec.toby.views.shoppinglist.detail.ShoppingListDetailActivity;
+import com.doodeec.toby.views.shoppinglist.detail.SLDetailActivity;
 import com.doodeec.toby.views.shoppinglist.edit.CreateListDialog;
 import com.doodeec.toby.views.shoppinglist.edit.ICreateListListener;
 
@@ -27,23 +27,29 @@ public class ShoppingListsListFragment extends Fragment {
 
     public final static String TAG = "ShoppingListsList";
 
-    private ShoppingListsAdapter adapter;
-    private TextView warningText;
+    private ShoppingListsAdapter mAdapter;
+    private TextView mWarningText;
+
+    public static ShoppingListsListFragment newInstance(Bundle extras) {
+        ShoppingListsListFragment fragment = new ShoppingListsListFragment();
+        fragment.setArguments(extras);
+        return fragment;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ShoppingListsAdapter();
+        mAdapter = new ShoppingListsAdapter();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fab_layout, container, false);
 
-        adapter.setData(AppData.getInstance().getShoppingLists());
+        mAdapter.setData(AppData.getInstance().getShoppingLists());
 
-        warningText = (TextView) rootView.findViewById(R.id.warning);
+        mWarningText = (TextView) rootView.findViewById(R.id.warning);
         checkDataSize();
 
         FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.floatingButton);
@@ -55,7 +61,7 @@ public class ShoppingListsListFragment extends Fragment {
                     public void OnListCreated(ShoppingList shoppingList) {
                         Toast.makeText(getActivity(), shoppingList.getName(), Toast.LENGTH_SHORT).show();
                         AppData.getInstance().addShoppingList(shoppingList);
-                        adapter.notifyDataSetChanged();
+                        mAdapter.notifyDataSetChanged();
                         checkDataSize();
                     }
 
@@ -69,12 +75,12 @@ public class ShoppingListsListFragment extends Fragment {
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(mAdapter);
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                Intent detailIntent = new Intent(getActivity(), ShoppingListDetailActivity.class);
-                detailIntent.putExtra(ShoppingListDetailActivity.SHOPPING_LIST_ID, position);
+                Intent detailIntent = new Intent(getActivity(), SLDetailActivity.class);
+                detailIntent.putExtra(SLDetailActivity.SHOPPING_LIST_ID, position);
                 startActivity(detailIntent);
             }
 
@@ -89,9 +95,9 @@ public class ShoppingListsListFragment extends Fragment {
 
     private void checkDataSize() {
         if (AppData.getInstance().getShoppingLists().size() > 0) {
-            warningText.setVisibility(View.GONE);
+            mWarningText.setVisibility(View.GONE);
         } else {
-            warningText.setVisibility(View.VISIBLE);
+            mWarningText.setVisibility(View.VISIBLE);
         }
     }
 }

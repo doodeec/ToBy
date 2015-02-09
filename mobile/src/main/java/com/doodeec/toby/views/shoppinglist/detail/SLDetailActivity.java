@@ -1,4 +1,4 @@
-package com.doodeec.toby.views.shoppinglist;
+package com.doodeec.toby.views.shoppinglist.detail;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -7,17 +7,21 @@ import android.view.MenuItem;
 
 import com.doodeec.toby.R;
 
-public class ShoppingListListActivity extends ActionBarActivity {
+/**
+ * @author dusan.bartos
+ */
+public class SLDetailActivity extends ActionBarActivity {
+
+    public static final String SHOPPING_LIST_ID = "slId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_activity);
 
-        ShoppingListsListFragment fabFragment = new ShoppingListsListFragment();
-
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, fabFragment, ShoppingListsListFragment.TAG)
+                .add(R.id.frame, SLDetailFragment.newInstance(getIntent().getExtras()),
+                        SLDetailFragment.TAG)
                 .commit();
     }
 

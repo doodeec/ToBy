@@ -177,8 +177,10 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
         PendingIntent actionPendingIntent = PendingIntent.getActivity(this, 0, actionIntent,
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        NotificationCompat.Action continueAction = new NotificationCompat.Action.Builder(R.drawable.ic_done_white_48dp,
-                "Continue shopping", actionPendingIntent)
+        NotificationCompat.Action continueAction = new NotificationCompat.Action.Builder(
+                R.drawable.ic_done_white_48dp,
+                getString(R.string.continue_shopping),
+                actionPendingIntent)
                 .build();
 
         NotificationCompat.WearableExtender wearOptions = new NotificationCompat.WearableExtender();

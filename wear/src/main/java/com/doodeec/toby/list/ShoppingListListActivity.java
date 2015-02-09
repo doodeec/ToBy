@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingListListActivity extends Activity implements WearableListView.ClickListener,
-        DataApi.DataListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+        DataApi.DataListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
     private static final String TAG = "WEARABLE_TOBY";
 
@@ -99,8 +100,6 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
     @Override
     public void onDataChanged(DataEventBuffer dataEvents) {
         Log.d(TAG, "onDataChanged");
-        Log.d(TAG, "data buffer: " + dataEvents);
-
         for (DataEvent event : dataEvents) {
             if (event.getType() == DataEvent.TYPE_CHANGED) {
                 DataMapItem dataMapItem = DataMapItem.fromDataItem(event.getDataItem());
@@ -117,6 +116,7 @@ public class ShoppingListListActivity extends Activity implements WearableListVi
                         total.append(line);
                     }
 
+                    // set lists to adapter
                     final List<ShoppingList> lists = Parser.parseShoppingLists(new JSONArray(total.toString()));
                     runOnUiThread(new Runnable() {
                         @Override

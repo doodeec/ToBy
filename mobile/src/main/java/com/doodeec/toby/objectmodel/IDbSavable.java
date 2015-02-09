@@ -7,7 +7,7 @@ import android.content.ContentValues;
  *
  * @author Dusan Bartos
  */
-public interface DbSavable {
+public interface IDbSavable {
     String id_column = "id";
 
     String getTableName();

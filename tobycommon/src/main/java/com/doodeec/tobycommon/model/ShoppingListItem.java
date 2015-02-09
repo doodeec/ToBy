@@ -27,19 +27,12 @@ public class ShoppingListItem extends ShoppingListItemBase {
         this.name = name;
     }
 
-    public ShoppingListItem(JSONObject object) {
-        try {
-            if (object.has(KEY_ID)) {
-                //TODO generate key before data sync
-                id = object.getInt(KEY_ID);
-            }
-            name = object.getString(KEY_NAME);
-            checked = object.getBoolean(KEY_CHECKED);
-            amount = object.getDouble(KEY_AMOUNT);
-            unit = UnitType.forTypeKey(object.getString(KEY_UNIT));
-        } catch (JSONException e) {
-            Log.e("Shopping list item JSON exception", e.getMessage());
-        }
+    public ShoppingListItem(JSONObject object) throws JSONException {
+        id = object.getInt(KEY_ID);
+        name = object.getString(KEY_NAME);
+        checked = object.getBoolean(KEY_CHECKED);
+        amount = object.getDouble(KEY_AMOUNT);
+        unit = UnitType.forTypeKey(object.getString(KEY_UNIT));
     }
 
     @Override
@@ -93,7 +86,7 @@ public class ShoppingListItem extends ShoppingListItemBase {
             jsonObject.put(KEY_AMOUNT, amount);
             jsonObject.put(KEY_UNIT, unit != null ? unit.typeKey : "");
         } catch (JSONException e) {
-            Log.e("Shopping list item JSON exception", e.getLocalizedMessage());
+            Log.e("SLItem JSON exception", e.getLocalizedMessage());
         }
         return jsonObject;
     }

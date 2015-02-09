@@ -8,20 +8,31 @@ import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.wearable.view.WearableListView;
+import android.util.Log;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.list.ShoppingListListActivity;
-import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 import com.doodeec.tobycommon.model.ShoppingList;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
+import com.doodeec.tobycommon.sync.DataSync;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.Asset;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.Wearable;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class ShoppingListDetailActivity extends Activity implements WearableListView.ClickListener, SLItemAdapter.ActionButtonListener {
+public class ShoppingListDetailActivity extends Activity implements WearableListView.ClickListener,
+        SLItemAdapter.ActionButtonListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener {
 
+    private static final String TAG = "WEARABLE_TOBY";
     private static int i = 0;
 
+    private GoogleApiClient mGoogleApiClient;
     private WearableListView mListView;
     private ShoppingList mShoppingList;
     private SLItemAdapter mItemsAdapter;
@@ -32,6 +43,12 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shopping_lists_activity);
+
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(Wearable.API)
+                .build();
 
         List<IShoppingListItem> items;
         if (getIntent().getExtras() != null) {
@@ -51,6 +68,43 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
 
         mNotificationManager = NotificationManagerCompat.from(this);
         mShoppingListNotificationId = ++i;
+    }
+
+    @Override
+    protected void onResume() {
+        Log.d(TAG, "Connecting");
+        super.onResume();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    protected void onPause() {
+        String list = mShoppingList.toJSON().toString();
+        Asset shoppingListAsset = Asset.createFromBytes(list.getBytes());
+
+        PutDataMapRequest dataMap = PutDataMapRequest.create(DataSync.SYNC_SYNC_LIST);
+        dataMap.getDataMap().putAsset(DataSync.SYNC_SHOPPING_LIST, shoppingListAsset);
+        Log.d(TAG, "Sync list to device " + list);
+        Wearable.DataApi.putDataItem(mGoogleApiClient, dataMap.asPutDataRequest());
+
+        Log.d(TAG, "Disconnecting");
+        super.onPause();
+        mGoogleApiClient.disconnect();
+    }
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        Log.d(TAG, "Connected");
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        Log.d(TAG, "Connection failed");
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.d(TAG, "Connection suspended");
     }
 
     @Override

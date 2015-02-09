@@ -25,7 +25,7 @@ public class Parser {
                 lists.add(new ShoppingList(listsArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
-            Log.e(TAG, "Parsing shopping list failed" + e.getMessage());
+            Log.e(TAG, "Parsing shopping list failed: " + e.getMessage());
         }
 
         return lists;

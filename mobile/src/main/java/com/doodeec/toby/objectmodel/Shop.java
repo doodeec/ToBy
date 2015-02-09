@@ -11,7 +11,7 @@ import com.doodeec.toby.dbstorage.ShopDBEntry;
  *
  * @author Dusan Bartos
  */
-public class Shop extends com.doodeec.tobycommon.model.Shop implements DbSavable {
+public class Shop extends com.doodeec.tobycommon.model.Shop implements IDbSavable {
 
     public Shop(String name) {
         super(name);

@@ -6,24 +6,17 @@ import android.database.Cursor;
 import com.doodeec.toby.dbstorage.ListItemDBEntry;
 
 /**
- * Created by Dusan Bartos on 12.1.2015.
+ * @author dusan.bartos
  */
-public class ShoppingListItem extends com.doodeec.tobycommon.model.ShoppingListItem implements DbSavable {
+public class ShoppingListItem extends com.doodeec.tobycommon.model.ShoppingListItem implements IDbSavable {
 
     public ShoppingListItem(String name) {
         super(name);
-        this.name = name;
     }
 
     public ShoppingListItem(Cursor cursor) {
-        super();
-        this.name = cursor.getString(cursor.getColumnIndex(ListItemDBEntry.COL_name));
+        this(cursor.getString(cursor.getColumnIndex(ListItemDBEntry.COL_name)));
         this.id = cursor.getInt(cursor.getColumnIndex(ListItemDBEntry.COL_id));
-    }
-
-    @Override
-    public void setId(int id) {
-        this.id = id;
     }
 
     @Override

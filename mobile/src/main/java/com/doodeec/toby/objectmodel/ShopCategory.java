@@ -10,7 +10,7 @@ import com.doodeec.toby.dbstorage.ShopCategoryDBEntry;
  *
  * @author Dusan Bartos
  */
-public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory implements DbSavable {
+public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory implements IDbSavable {
 
     public ShopCategory(String name) {
         super(name);

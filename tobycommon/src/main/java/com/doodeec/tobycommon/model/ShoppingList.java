@@ -13,13 +13,14 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Observable;
 
 /**
  * Shopping list object
  *
  * @author Dusan Bartos
  */
-public class ShoppingList {
+public class ShoppingList extends Observable {
 
     protected static final String KEY_ID = "id";
     protected static final String KEY_NAME = "name";
@@ -45,15 +46,18 @@ public class ShoppingList {
         this.name = name;
     }
 
-    public ShoppingList(JSONObject object) {
-        try {
-            id = object.getInt(KEY_ID);
-            name = object.getString(KEY_NAME);
-            completed = object.getBoolean(KEY_COMPLETED);
-            items = deserializeItems(object.getString(KEY_ITEMS));
-        } catch (JSONException e){
-            Log.e("Shopping list JSON exception", e.getMessage());
-        }
+    public ShoppingList(JSONObject object) throws JSONException {
+        id = object.getInt(KEY_ID);
+        name = object.getString(KEY_NAME);
+        completed = object.getBoolean(KEY_COMPLETED);
+        items = deserializeItems(object.getString(KEY_ITEMS));
+    }
+
+    public void updateFrom(ShoppingList list) {
+        id = list.id;
+        name = list.name;
+        completed = list.completed;
+        items = list.items;
     }
 
     public String getName() {
@@ -96,20 +100,26 @@ public class ShoppingList {
     }
 
     public void setItems(List<IShoppingListItem> items) {
-        if (items != null) {
-            this.items = items;
-        } else {
-            this.items.clear();
+        synchronized (this) {
+            if (items != null) {
+                this.items = items;
+            } else {
+                this.items.clear();
+            }
+            setChanged();
+            notifyObservers();
         }
     }
 
     public void addItem(IShoppingListItem item) {
         this.items.add(item);
+        setChanged();
+        notifyObservers();
     }
 
     protected static String serializeItems(List<IShoppingListItem> items) {
         JSONArray itemsArray = new JSONArray();
-        for (IShoppingListItem listItem: items) {
+        for (IShoppingListItem listItem : items) {
             itemsArray.put(listItem.toJSON());
         }
         return itemsArray.toString();
@@ -124,7 +134,7 @@ public class ShoppingList {
                 items.add(new ShoppingListItem(itemsArray.getJSONObject(i)));
             }
         } catch (JSONException e) {
-            Log.e("Shopping list items", "Parsing shopping list items failed" + e.getMessage());
+            Log.e("SLItem", "Parsing shopping list items failed" + e.getMessage());
         }
 
         return items;
@@ -138,7 +148,7 @@ public class ShoppingList {
             jsonObject.put(KEY_COMPLETED, completed);
             jsonObject.put(KEY_ITEMS, serializeItems(items));
         } catch (JSONException e) {
-            Log.e("Shopping list JSON exception", e.getLocalizedMessage());
+            Log.e("Shopping list", "JSON exception " + e.getLocalizedMessage());
         }
         return jsonObject;
     }

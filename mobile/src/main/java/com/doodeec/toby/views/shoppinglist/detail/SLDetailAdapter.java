@@ -2,12 +2,12 @@ package com.doodeec.toby.views.shoppinglist.detail;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppState;
-import com.doodeec.toby.objectmodel.ShoppingListItem;
+import com.doodeec.tobycommon.model.UnitType;
+import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,35 +17,39 @@ import java.util.List;
  */
 public class SLDetailAdapter extends RecyclerView.Adapter<SLDetailViewHolder> {
 
-    List<ShoppingListItem> data;
+    List<IShoppingListItem> data;
 
     public SLDetailAdapter() {
         data = new ArrayList<>();
     }
 
-    public void setData(List<ShoppingListItem> data) {
+    public void setData(List<IShoppingListItem> data) {
         this.data = data;
         notifyDataSetChanged();
     }
 
-    public void addList(ShoppingListItem list) {
+    public void addList(IShoppingListItem list) {
         this.data.add(list);
         notifyDataSetChanged();
     }
 
     @Override
     public SLDetailViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater
-                .from(AppState.getAppContext())
-                .inflate(R.layout.shopping_list_holder, parent, false);
-        return new SLDetailViewHolder(view);
+        return new SLDetailViewHolder(
+                LayoutInflater
+                        .from(AppState.getAppContext())
+                        .inflate(R.layout.list_item_holder, parent, false)
+        );
     }
 
     @Override
     public void onBindViewHolder(SLDetailViewHolder holder, int position) {
-        ShoppingListItem item = data.get(position);
+        IShoppingListItem item = data.get(position);
 
         holder.setName(item.getName());
+        holder.setAmount(item.getAmount());
+        holder.setChecked(item.getChecked());
+        holder.setUnit(item.getUnit() == null ? UnitType.Undefined.resource : item.getUnit().resource);
     }
 
     @Override

@@ -1,21 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FrameLayout
-    android:orientation="vertical"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/warning"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/detail_info"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding"
-        android:text="Empty detail"
-        android:layout_gravity="center_horizontal"/>
+        android:padding="@dimen/padding">
+
+        <TextView
+            android:id="@+id/detail_name_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:layout_marginBottom="@dimen/padding"
+            android:text="@string/list_name_hint"/>
+
+        <TextView
+            android:id="@+id/detail_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:text="Nakup v Bille"
+            android:layout_toRightOf="@id/detail_name_label"/>
+
+        <TextView
+            android:id="@+id/detail_shop_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/padding"
+            android:text="@string/shop_name_hint"
+            android:layout_below="@id/detail_name_label"/>
+
+        <TextView
+            android:id="@+id/detail_shop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right"
+            android:layout_alignParentRight="true"
+            android:text="BILLA"
+            android:layout_alignBottom="@id/detail_shop_label"
+            android:layout_toRightOf="@id/detail_name_label"/>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/detail_separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/grey"
+        android:layout_below="@id/detail_info"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/items_list"
+        android:id="@+id/detail_item_list"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/detail_separator"/>
 
-</FrameLayout>
+</RelativeLayout>

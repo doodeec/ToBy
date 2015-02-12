@@ -45,7 +45,7 @@ public class AppData {
 
                     instance.generateDefaultCategories();
                     instance.generateDefaultShop();
-                    instance.generateMockData();
+//                    instance.generateMockData();
                 }
             }
         }
@@ -56,6 +56,11 @@ public class AppData {
     // wrapper for singleton creation
     private static AppData createInstance() {
         AppData appData = new AppData();
+
+//        appData.getShops();
+//        appData.getCategories();
+        appData.getShoppingLists();
+        appData.getShoppingListItems();
 
         // set database observers
         /*appData.allShops.addObserver(new Observer() {

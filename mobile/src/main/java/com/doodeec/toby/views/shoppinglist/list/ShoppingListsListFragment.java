@@ -37,16 +37,10 @@ public class ShoppingListsListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        mAdapter = new ShoppingListsAdapter();
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fab_layout, container, false);
 
+        mAdapter = new ShoppingListsAdapter();
         mAdapter.setData(AppData.getInstance().getShoppingLists());
 
         mWarningText = (TextView) rootView.findViewById(R.id.warning);

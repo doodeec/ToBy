@@ -2,10 +2,12 @@ package com.doodeec.toby.views.shoppinglist.detail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
@@ -30,13 +32,12 @@ public class SLDetailFragment extends Fragment {
     private ShoppingList mShoppingList;
     private SLDetailAdapter mAdapter;
 
-    @InjectView(R.id.items_list)
+    @InjectView(R.id.detail_item_list)
     RecyclerView mItemsList;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
+    @InjectView(R.id.detail_name)
+    TextView mName;
+    @InjectView(R.id.detail_shop)
+    TextView mShopName;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -44,12 +45,19 @@ public class SLDetailFragment extends Fragment {
 
         ButterKnife.inject(this, rootView);
 
-        if (savedInstanceState != null) {
-            int slPosition = savedInstanceState.getInt(SLDetailActivity.SHOPPING_LIST_ID);
-            mShoppingList = AppData.getInstance().getShoppingLists().get(slPosition);
-        }
+        mAdapter = new SLDetailAdapter();
+        mItemsList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        mItemsList.setHasFixedSize(true);
+        mItemsList.setAdapter(mAdapter);
 
-        //TODO not finished, add adapter + VH
+        if (getArguments() != null) {
+            int slPosition = getArguments().getInt(SLDetailActivity.SHOPPING_LIST_ID);
+            mShoppingList = AppData.getInstance().getShoppingLists().get(slPosition);
+
+            mAdapter.setData(mShoppingList.getItems());
+            mName.setText(mShoppingList.getName());
+            mShopName.setText(mShoppingList.getShop() != null ? mShoppingList.getShop().getName() : null);
+        }
 
         return rootView;
     }

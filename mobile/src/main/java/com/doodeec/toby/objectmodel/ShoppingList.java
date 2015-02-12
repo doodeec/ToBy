@@ -3,7 +3,6 @@ package com.doodeec.toby.objectmodel;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.doodeec.toby.appstate.AppData;
 import com.doodeec.toby.dbstorage.ShoppingListDBEntry;
 
 import org.json.JSONException;
@@ -29,13 +28,11 @@ public class ShoppingList extends com.doodeec.tobycommon.model.ShoppingList impl
     public ShoppingList(Cursor cursor) {
         this(cursor.getString(cursor.getColumnIndex(ShoppingListDBEntry.COL_name)));
 
-        AppData appData = AppData.getInstance();
-
         this.id = cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_id));
-        this.category = appData.getCategoryById(
+        /*this.category = appData.getCategoryById(
                 cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_categoryId)));
         this.shop = appData.getShopById(
-                cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_shopId)));
+                cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_shopId)));*/
         this.completed = cursor.getInt(cursor.getColumnIndex(ShoppingListDBEntry.COL_id)) == 1;
         this.items = deserializeItems(
                 cursor.getString(cursor.getColumnIndex(ShoppingListDBEntry.COL_items)));

@@ -13,12 +13,9 @@ import android.widget.Toast;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
-import com.doodeec.toby.objectmodel.ShoppingList;
-import com.doodeec.toby.views.FloatingActionButton;
 import com.doodeec.toby.views.RecyclerItemClickListener;
 import com.doodeec.toby.views.shoppinglist.detail.SLDetailActivity;
-import com.doodeec.toby.views.shoppinglist.edit.CreateListDialog;
-import com.doodeec.toby.views.shoppinglist.edit.ICreateListListener;
+import com.getbase.floatingactionbutton.AddFloatingActionButton;
 
 /**
  * @author dusan.bartos
@@ -46,24 +43,13 @@ public class ShoppingListsListFragment extends Fragment {
         mWarningText = (TextView) rootView.findViewById(R.id.warning);
         checkDataSize();
 
-        FloatingActionButton fab1 = (FloatingActionButton) rootView.findViewById(R.id.floatingButton);
+        AddFloatingActionButton fab1 = (AddFloatingActionButton) rootView.findViewById(R.id.floatingButton);
         fab1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CreateListDialog.showDialog(getActivity().getSupportFragmentManager(), new ICreateListListener() {
-                    @Override
-                    public void OnListCreated(ShoppingList shoppingList) {
-                        Toast.makeText(getActivity(), shoppingList.getName(), Toast.LENGTH_SHORT).show();
-                        AppData.getInstance().addShoppingList(shoppingList);
-                        mAdapter.notifyDataSetChanged();
-                        checkDataSize();
-                    }
-
-                    @Override
-                    public void OnListDismissed() {
-                        checkDataSize();
-                    }
-                });
+                Intent detailIntent = new Intent(getActivity(), SLDetailActivity.class);
+                detailIntent.putExtra(SLDetailActivity.SHOPPING_LIST_NEW, true);
+                startActivity(detailIntent);
             }
         });
 
@@ -85,6 +71,12 @@ public class ShoppingListsListFragment extends Fragment {
         }));
 
         return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
     }
 
     private void checkDataSize() {

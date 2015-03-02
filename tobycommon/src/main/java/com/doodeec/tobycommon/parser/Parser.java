@@ -14,11 +14,22 @@ import java.util.List;
  */
 public class Parser {
 
+    /**
+     * Parses json array to list of shopping lists
+     * Only adds lists which have some items
+     *
+     * @param listsArray json definition
+     * @return list of non-empty shopping lists
+     * @throws JSONException
+     */
     public static List<ShoppingList> parseShoppingLists(JSONArray listsArray) throws JSONException {
         List<ShoppingList> lists = new ArrayList<>();
 
         for (int i = 0; i < listsArray.length(); i++) {
-            lists.add(new ShoppingList(listsArray.getJSONObject(i)));
+            ShoppingList shoppingList = new ShoppingList(listsArray.getJSONObject(i));
+            if (shoppingList.getItems().size() > 0) {
+                lists.add(shoppingList);
+            }
         }
 
         return lists;

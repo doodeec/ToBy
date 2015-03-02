@@ -56,7 +56,7 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
             mShoppingList = ShoppingListListActivity.shoppingLists.get(position);
             items = mShoppingList.getItems();
         } else {
-            //TODO notification/warning
+            //TODO message
             items = new ArrayList<>();
         }
 
@@ -182,6 +182,13 @@ public class ShoppingListDetailActivity extends Activity implements WearableList
                 getString(R.string.continue_shopping),
                 actionPendingIntent)
                 .build();
+
+        //TODO stop shopping page
+        /*NotificationCompat.Action stopAction = new NotificationCompat.Action.Builder(
+                R.drawable.ic_done_white_48dp,
+                getString(R.string.continue_shopping),
+                actionPendingIntent)
+                .build();*/
 
         NotificationCompat.WearableExtender wearOptions = new NotificationCompat.WearableExtender();
         wearOptions.setContentIcon(R.drawable.ic_launcher)

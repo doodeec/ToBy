@@ -16,7 +16,6 @@ import com.doodeec.toby.objectmodel.ShopCategory;
 import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.objectmodel.ShoppingListItem;
 import com.doodeec.tobycommon.model.BaseObservable;
-import com.doodeec.tobycommon.model.UnitType;
 import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 
 import org.json.JSONArray;
@@ -125,22 +124,8 @@ public class AppData {
     }
 
     public void setShoppingLists(List<ShoppingList> shoppingLists) {
-        this.allShoppingLists.updateData(shoppingLists);
-
         for (ShoppingList shoppingList : shoppingLists) {
-            // register observer for shopping list items
-            shoppingList.addObserver(new Observer() {
-                @Override
-                public void update(Observable observable, Object data) {
-                    SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                    for (IShoppingListItem item : ((ShoppingList) observable).getItems()) {
-                        if (item instanceof ShoppingListItem) {
-                            saveObjectToDB(database, (ShoppingListItem) item);
-                        }
-                    }
-                    database.close();
-                }
-            });
+            addShoppingList(shoppingList);
         }
     }
 
@@ -157,6 +142,7 @@ public class AppData {
                         saveObjectToDB(database, (ShoppingListItem) item);
                     }
                 }
+                saveObjectToDB(database, (ShoppingList) observable);
                 database.close();
             }
         });
@@ -226,7 +212,7 @@ public class AppData {
                     shoppingLists.add(new ShoppingList(cursor));
                 }
 
-                allShoppingLists.setData(shoppingLists);
+                setShoppingLists(shoppingLists);
                 cursor.close();
             } finally {
                 db.close();
@@ -295,7 +281,6 @@ public class AppData {
     private void saveObjectToDB(SQLiteDatabase db, IDbSavable object) {
         ContentValues values = object.getValues();
 
-        long newRowId = -1;
         String[] column = {IDbSavable.id_column};
         String[] args = {String.valueOf(object.getId())};
 
@@ -306,10 +291,13 @@ public class AppData {
 
             Log.d("TOBY", "Update object " + object.getClass().getSimpleName() + " with id: " + args[0]);
         } else {
-            newRowId = db.insert(object.getTableName(), null, values);
-            object.setId((int) newRowId);
-
-            Log.d("TOBY", "Inserted " + object.getClass().getSimpleName() + ": " + newRowId);
+            long newRowId = db.insert(object.getTableName(), null, values);
+            if (newRowId != -1) {
+                object.setId((int) newRowId);
+                Log.d("TOBY", "Inserted " + object.getClass().getSimpleName() + ": " + newRowId);
+            } else {
+                Log.e("TOBY", "Error inserting " + object.getClass().getSimpleName());
+            }
         }
         c.close();
     }
@@ -327,47 +315,8 @@ public class AppData {
         addCategory(new ShopCategory("Darčeky"));
         addCategory(new ShopCategory("Obuv"));
         addCategory(new ShopCategory("Oblečenie"));
+        addCategory(new ShopCategory("Šport"));
         addCategory(new ShopCategory("Drogéria"));
         addCategory(new ShopCategory("Nábytok"));
-    }
-
-    //TODO remove
-    private void generateMockData() {
-        addShoppingList(new ShoppingList("Prvy zoznam"));
-        addShoppingList(new ShoppingList("Druhy zoznam"));
-        addShoppingList(new ShoppingList("Treti zoznam"));
-        addShoppingList(new ShoppingList("Stvrty zoznam"));
-        addShoppingList(new ShoppingList("Piaty zoznam"));
-        addShoppingList(new ShoppingList("Siesty zoznam"));
-
-        List<IShoppingListItem> items = new ArrayList<>();
-
-        IShoppingListItem item = new ShoppingListItem("Prva polozka");
-        item.setAmount(4);
-        item.setUnitType(UnitType.Units);
-        IShoppingListItem item2 = new ShoppingListItem("Druha polozka");
-        item2.setAmount(10);
-        item2.setUnitType(UnitType.Units);
-        IShoppingListItem item3 = new ShoppingListItem("Tretia polozka");
-        item2.setAmount(5);
-        item2.setUnitType(UnitType.Liter);
-        IShoppingListItem item4 = new ShoppingListItem("Stvrta polozka");
-        item2.setAmount(1);
-        item2.setUnitType(UnitType.Kilo);
-        IShoppingListItem item5 = new ShoppingListItem("Piata polozka");
-        item2.setAmount(10);
-        item2.setUnitType(UnitType.Units);
-
-        items.add(item);
-        items.add(item2);
-        items.add(item3);
-        items.add(item4);
-        items.add(item5);
-        this.allShoppingLists.getData().get(0).setItems(items);
-        this.allShoppingLists.getData().get(1).setItems(items);
-        this.allShoppingLists.getData().get(2).setItems(items);
-        this.allShoppingLists.getData().get(3).setItems(items);
-        this.allShoppingLists.getData().get(4).setItems(items);
-        this.allShoppingLists.getData().get(5).setItems(items);
     }
 }

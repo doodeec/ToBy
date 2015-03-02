@@ -36,4 +36,9 @@ public enum UnitType {
         }
         return Undefined;
     }
+
+    @Override
+    public String toString() {
+        return typeKey;
+    }
 }

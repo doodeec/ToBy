@@ -73,7 +73,11 @@ public class ShoppingList extends Observable {
     }
 
     public void setShop(IShop shop) {
-        this.shop = shop;
+        if (this.shop != shop) {
+            this.shop = shop;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     public IShop getShop() {
@@ -81,14 +85,24 @@ public class ShoppingList extends Observable {
     }
 
     public void setShopCategory(IShopCategory shopCategory) {
-        this.category = shopCategory;
+        if (category != shopCategory) {
+            this.category = shopCategory;
+            setChanged();
+            notifyObservers();
+        }
     }
 
     public IShopCategory getShopCategory() {
         return category;
     }
-
+    
+    public void checkCompletion() {
+        completed = !hasActiveItems();
+    }
+    
     public boolean hasActiveItems() {
+        if (items.size() == 0) return true;
+        
         for (IShoppingListItem item : items) {
             if (!item.getChecked()) return true;
         }
@@ -116,6 +130,8 @@ public class ShoppingList extends Observable {
         setChanged();
         notifyObservers();
     }
+    
+    //TODO update item + notify observers
 
     protected static String serializeItems(List<IShoppingListItem> items) {
         JSONArray itemsArray = new JSONArray();

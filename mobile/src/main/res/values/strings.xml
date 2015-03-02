@@ -16,9 +16,15 @@
     <string name="shop_hint">Shop</string>
     <string name="shop_category_hint">Shop category</string>
     <string name="dismiss_btn">Dismiss</string>
-    <string name="save_list_btn">Save shopping list</string>
+    <string name="save_product_btn">Add item</string>
     <string name="save_shop_btn">Save shop</string>
+    <string name="item_name_hint">Item name</string>
+    <string name="item_amount_hint">Item amount</string>
+    <string name="item_unit_hint">Amount unit</string>
 
     <string name="list_no_name">List with no name created</string>
+    <string name="title_activity_login">LoginActivity</string>
+
+    <string name="hello_world">Hello world!</string>
 
 </resources>

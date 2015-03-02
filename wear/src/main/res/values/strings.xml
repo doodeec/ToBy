@@ -3,5 +3,6 @@
 
     <string name="app_name">ToBy</string>
     <string name="continue_shopping">Continue shopping</string>
+    <string name="stop_shopping">Stop shopping</string>
 
 </resources>

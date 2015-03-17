@@ -33,23 +33,26 @@ import java.util.Observer;
 public class AppData {
 
     // singleton
-    private static AppData instance;
+    private static AppData sInstance;
 
     // thread safe double null check
     public static AppData getInstance() {
-        if (instance == null) {
+        if (sInstance == null) {
             synchronized (AppData.class) {
-                if (instance == null) {
-                    instance = createInstance();
+                if (sInstance == null) {
+                    sInstance = createInstance();
 
-                    instance.generateDefaultCategories();
-                    instance.generateDefaultShop();
+                    if (!sInstance.hasCategories()) {
+                        sInstance.generateDefaultCategories();
+                    }
+
+                    sInstance.generateDefaultShop();
 //                    instance.generateMockData();
                 }
             }
         }
 
-        return instance;
+        return sInstance;
     }
 
     // wrapper for singleton creation
@@ -70,21 +73,29 @@ public class AppData {
                     instance.saveObjectToDB(database, shop);
                 }
                 database.close();
+                database.releaseReference();
             }
         });*/
         appData.allShoppingLists.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                for (ShoppingList list : instance.allShoppingLists.getData()) {
-                    for (IShoppingListItem item : list.getItems()) {
-                        if (item instanceof ShoppingListItem) {
-                            instance.saveObjectToDB(database, (ShoppingListItem) item);
+                synchronized (DBHelper.class) {
+                    SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+
+                    try {
+                        for (ShoppingList list : sInstance.allShoppingLists.getData()) {
+                            for (IShoppingListItem item : list.getItems()) {
+                                if (item instanceof ShoppingListItem) {
+                                    sInstance.saveObjectToDB(database, (ShoppingListItem) item);
+                                }
+                            }
+                            sInstance.saveObjectToDB(database, list);
                         }
+                    } finally {
+                        database.close();
+                        database.releaseReference();
                     }
-                    instance.saveObjectToDB(database, list);
                 }
-                database.close();
             }
         });
         /*appData.allCategories.addObserver(new Observer() {
@@ -95,6 +106,7 @@ public class AppData {
                     instance.saveObjectToDB(database, category);
                 }
                 database.close();
+                database.releaseReference();
             }
         });*/
 
@@ -136,14 +148,21 @@ public class AppData {
         shoppingList.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                for (IShoppingListItem item : ((ShoppingList) observable).getItems()) {
-                    if (item instanceof ShoppingListItem) {
-                        saveObjectToDB(database, (ShoppingListItem) item);
+                synchronized (DBHelper.class) {
+                    SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+
+                    try {
+                        for (IShoppingListItem item : ((ShoppingList) observable).getItems()) {
+                            if (item instanceof ShoppingListItem) {
+                                saveObjectToDB(database, (ShoppingListItem) item);
+                            }
+                        }
+                        saveObjectToDB(database, (ShoppingList) observable);
+                    } finally {
+                        database.close();
+                        database.releaseReference();
                     }
                 }
-                saveObjectToDB(database, (ShoppingList) observable);
-                database.close();
             }
         });
     }
@@ -156,88 +175,112 @@ public class AppData {
         this.allShoppingListItems.addSingleItem(shoppingListItem);
     }
 
-    public synchronized List<Shop> getShops() {
+    public List<Shop> getShops() {
         if (allShops.getData() == null) {
-            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            List<Shop> shops = new ArrayList<>();
+            synchronized (DBHelper.class) {
+                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+                List<Shop> shops = new ArrayList<>();
 
-            try {
-                Cursor cursor = db.query(ShopDBEntry.TABLE_NAME, null, null, null, null, null, null);
-
-                while (cursor.moveToNext()) {
-                    shops.add(new Shop(cursor));
+                try {
+                    Cursor cursor = db.query(ShopDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                    while (cursor.moveToNext()) {
+                        shops.add(new Shop(cursor));
+                    }
+                    cursor.close();
+                } finally {
+                    db.close();
+                    db.releaseReference();
                 }
 
                 allShops.setData(shops);
-                cursor.close();
-            } finally {
-                db.close();
             }
         }
 
         return allShops.getData();
     }
 
-    public synchronized List<ShopCategory> getCategories() {
+    public List<ShopCategory> getCategories() {
         if (allCategories.getData() == null) {
-            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            List<ShopCategory> categories = new ArrayList<>();
+            synchronized (DBHelper.class) {
+                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+                List<ShopCategory> categories = new ArrayList<>();
 
-            try {
-                Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
-
-                while (cursor.moveToNext()) {
-                    categories.add(new ShopCategory(cursor));
+                try {
+                    Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                    while (cursor.moveToNext()) {
+                        categories.add(new ShopCategory(cursor));
+                    }
+                    cursor.close();
+                } finally {
+                    db.close();
+                    db.releaseReference();
                 }
 
                 allCategories.setData(categories);
-                cursor.close();
-            } finally {
-                db.close();
             }
         }
 
         return allCategories.getData();
     }
 
-    public synchronized List<ShoppingList> getShoppingLists() {
-        if (allShoppingLists.getData() == null) {
+    public boolean hasCategories() {
+        synchronized (DBHelper.class) {
             SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            List<ShoppingList> shoppingLists = new ArrayList<>();
-
+            boolean result = false;
             try {
-                Cursor cursor = db.query(ShoppingListDBEntry.TABLE_NAME, null, null, null, null, null, null);
-
-                while (cursor.moveToNext()) {
-                    shoppingLists.add(new ShoppingList(cursor));
-                }
-
-                setShoppingLists(shoppingLists);
+                Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                if (cursor.getCount() > 0) result = true;
                 cursor.close();
             } finally {
                 db.close();
+                db.releaseReference();
+            }
+            return result;
+        }
+    }
+
+    public List<ShoppingList> getShoppingLists() {
+        if (allShoppingLists.getData() == null) {
+            synchronized (DBHelper.class) {
+                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+                List<ShoppingList> shoppingLists = new ArrayList<>();
+
+                try {
+                    Cursor cursor = db.query(ShoppingListDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                    while (cursor.moveToNext()) {
+                        shoppingLists.add(new ShoppingList(cursor));
+                    }
+                    cursor.close();
+                } finally {
+                    db.close();
+                    db.releaseReference();
+                }
+
+                setShoppingLists(shoppingLists);
             }
         }
 
         return allShoppingLists.getData();
     }
 
-    public synchronized List<ShoppingListItem> getShoppingListItems() {
+    public List<ShoppingListItem> getShoppingListItems() {
         if (allShoppingListItems.getData() == null) {
-            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            List<ShoppingListItem> shoppingListItems = new ArrayList<>();
+            synchronized (DBHelper.class) {
+                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+                List<ShoppingListItem> shoppingListItems = new ArrayList<>();
 
-            try {
-                Cursor cursor = db.query(ListItemDBEntry.TABLE_NAME, null, null, null, null, null, null);
-
-                while (cursor.moveToNext()) {
-                    shoppingListItems.add(new ShoppingListItem(cursor));
+                try {
+                    Cursor cursor = db.query(ListItemDBEntry.TABLE_NAME, null, null, null, null, null, null);
+                    while (cursor.moveToNext()) {
+                        shoppingListItems.add(new ShoppingListItem(cursor));
+                    }
+                    cursor.close();
+                } finally {
+                    db.close();
+                    db.releaseReference();
                 }
 
                 allShoppingListItems.setData(shoppingListItems);
-                cursor.close();
-            } finally {
-                db.close();
             }
         }
 
@@ -271,11 +314,18 @@ public class AppData {
     }
 
     private void saveShoppingLists() {
-        SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-        for (ShoppingList list : instance.allShoppingLists.getData()) {
-            instance.saveObjectToDB(database, list);
+        synchronized (DBHelper.class) {
+            SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+
+            try {
+                for (ShoppingList list : sInstance.allShoppingLists.getData()) {
+                    sInstance.saveObjectToDB(database, list);
+                }
+            } finally {
+                database.close();
+                database.releaseReference();
+            }
         }
-        database.close();
     }
 
     private void saveObjectToDB(SQLiteDatabase db, IDbSavable object) {
@@ -307,16 +357,32 @@ public class AppData {
         this.allShops.addSingleItem(new Shop("BILLA"));
     }
 
+    /**
+     * Initializes database entries for default shop categories
+     */
     private void generateDefaultCategories() {
-        addCategory(new ShopCategory("Potraviny"));
-        addCategory(new ShopCategory("Ovocie a zelenina"));
-        addCategory(new ShopCategory("Mäsiarstvo"));
-        addCategory(new ShopCategory("Domáce potreby"));
-        addCategory(new ShopCategory("Darčeky"));
-        addCategory(new ShopCategory("Obuv"));
-        addCategory(new ShopCategory("Oblečenie"));
-        addCategory(new ShopCategory("Šport"));
-        addCategory(new ShopCategory("Drogéria"));
-        addCategory(new ShopCategory("Nábytok"));
+        List<ShopCategory> categories = new ArrayList<>();
+        categories.add(new ShopCategory("Potraviny", 1));
+        categories.add(new ShopCategory("Ovocie a zelenina", 2));
+        categories.add(new ShopCategory("Mäsiarstvo", 3));
+        categories.add(new ShopCategory("Domáce potreby", 4));
+        categories.add(new ShopCategory("Darčeky", 5));
+        categories.add(new ShopCategory("Obuv", 6));
+        categories.add(new ShopCategory("Oblečenie", 7));
+        categories.add(new ShopCategory("Šport", 8));
+        categories.add(new ShopCategory("Drogéria", 9));
+        categories.add(new ShopCategory("Nábytok", 10));
+
+        synchronized (DBHelper.class) {
+            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
+            try {
+                for (ShopCategory cat : categories) {
+                    saveObjectToDB(db, cat);
+                }
+            } finally {
+                db.close();
+                db.releaseReference();
+            }
+        }
     }
 }

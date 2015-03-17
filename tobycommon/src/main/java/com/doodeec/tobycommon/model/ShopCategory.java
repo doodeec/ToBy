@@ -9,7 +9,7 @@ import com.doodeec.tobycommon.model.interfaces.IShopCategory;
  */
 public class ShopCategory implements IShopCategory {
 
-    protected Integer id;
+    protected Integer id = -1;
     protected String name;
     protected Integer usage;
 
@@ -19,6 +19,11 @@ public class ShopCategory implements IShopCategory {
     public ShopCategory(String name) {
         this.name = name;
         this.usage = 0;
+    }
+
+    public ShopCategory(String name, int id) {
+        this(name);
+        this.id = id;
     }
 
     @Override

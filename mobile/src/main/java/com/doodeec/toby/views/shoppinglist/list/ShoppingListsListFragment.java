@@ -80,7 +80,8 @@ public class ShoppingListsListFragment extends Fragment {
     }
 
     private void checkDataSize() {
-        if (AppData.getInstance().getShoppingLists().size() > 0) {
+        if (AppData.getInstance().getShoppingLists() != null &&
+                AppData.getInstance().getShoppingLists().size() > 0) {
             mWarningText.setVisibility(View.GONE);
         } else {
             mWarningText.setVisibility(View.VISIBLE);

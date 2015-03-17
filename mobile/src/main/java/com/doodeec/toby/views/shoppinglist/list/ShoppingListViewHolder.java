@@ -6,21 +6,23 @@ import android.widget.TextView;
 
 import com.doodeec.toby.R;
 
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
 /**
  * @author dusan.bartos
  */
 public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
 
+    @InjectView(R.id.list_name)
     TextView name;
+    @InjectView(R.id.shop_name)
     TextView shopName;
 
     public ShoppingListViewHolder(View view) {
         super(view);
 
-        //TODO butterknife
-
-        name = (TextView) view.findViewById(R.id.list_name);
-        shopName = (TextView) view.findViewById(R.id.shop_name);
+        ButterKnife.inject(this, view);
     }
 
     public void setName(String name) {

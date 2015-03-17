@@ -23,8 +23,5 @@
     <string name="item_unit_hint">Amount unit</string>
 
     <string name="list_no_name">List with no name created</string>
-    <string name="title_activity_login">LoginActivity</string>
-
-    <string name="hello_world">Hello world!</string>
 
 </resources>

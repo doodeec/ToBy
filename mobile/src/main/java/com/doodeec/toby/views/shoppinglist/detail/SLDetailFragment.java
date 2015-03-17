@@ -13,11 +13,14 @@ import android.widget.TextView;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
+import com.doodeec.toby.objectmodel.ShopCategory;
 import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.views.shoppinglist.edit.AddProductDialog;
 import com.doodeec.toby.views.shoppinglist.edit.IAddProductListener;
 import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 import com.getbase.floatingactionbutton.AddFloatingActionButton;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -60,10 +63,12 @@ public class SLDetailFragment extends Fragment {
         mItemsList.setHasFixedSize(true);
         mItemsList.setAdapter(mAdapter);
 
+        List<ShopCategory> categories = AppData.getInstance().getCategories();
+
         mShopCategory.setAdapter(new ArrayAdapter<>(getActivity(), R.layout.spinner_item,
-                AppData.getInstance().getCategories()));
+                categories));
         mShopCategory.setSelection(0);
-        
+
         if (getArguments() != null) {
             boolean slIsNew = getArguments().getBoolean(SLDetailActivity.SHOPPING_LIST_NEW, false);
             if (!slIsNew) {
@@ -73,8 +78,14 @@ public class SLDetailFragment extends Fragment {
                 mAdapter.setData(mShoppingList.getItems());
                 mName.setText(mShoppingList.getName());
                 mShopName.setText(mShoppingList.getShop() != null ? mShoppingList.getShop().getName() : null);
-                //TODO selected category
-//            mShopCategory.setSelection(0);
+
+                // select category
+                for (int i = 0; i < categories.size(); i++) {
+                    if (categories.get(i).getId().equals(mShoppingList.getShopCategory().getId())) {
+                        mShopCategory.setSelection(i);
+                        break;
+                    }
+                }
             } else {
                 mShoppingList = new ShoppingList("Unnamed");
                 mAdapter.setData(mShoppingList.getItems());
@@ -103,14 +114,14 @@ public class SLDetailFragment extends Fragment {
     }
 
     @Override
-    public void onDestroy() {
+    public void onPause() {
         mShoppingList.setShopCategory(AppData.getInstance().getCategories().get(mShopCategory.getSelectedItemPosition()));
-        super.onDestroy();
+        super.onPause();
     }
 
     public void completeShoppingList() {
         if (mShoppingList != null) {
-            for (IShoppingListItem item: mShoppingList.getItems()) {
+            for (IShoppingListItem item : mShoppingList.getItems()) {
                 item.setChecked(true);
             }
             mShoppingList.checkCompletion();

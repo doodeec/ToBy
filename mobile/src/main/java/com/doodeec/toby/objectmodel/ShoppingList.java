@@ -55,8 +55,8 @@ public class ShoppingList extends com.doodeec.tobycommon.model.ShoppingList impl
         ContentValues values = new ContentValues();
         values.put(ShoppingListDBEntry.COL_id, id);
         values.put(ShoppingListDBEntry.COL_name, name);
-        //TODO store category and shop id
-//        values.put(ShoppingListDBEntry.COL_categoryId, category.getId());
+        values.put(ShoppingListDBEntry.COL_categoryId, category != null ? category.getId() : -1);
+        //TODO store shop id
 //        values.put(ShoppingListDBEntry.COL_shopId, shop.getId());
         values.put(ShoppingListDBEntry.COL_completed, completed ? 1 : 0);
         values.put(ShoppingListDBEntry.COL_items, serializeItems(items));

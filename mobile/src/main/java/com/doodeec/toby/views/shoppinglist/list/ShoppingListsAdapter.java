@@ -24,7 +24,13 @@ public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewH
     }
 
     public void setData(List<ShoppingList> data) {
-        this.data = data;
+        this.data.clear();
+        if (data == null) {
+            notifyDataSetChanged();
+            return;
+        }
+
+        this.data.addAll(data);
         notifyDataSetChanged();
     }
 

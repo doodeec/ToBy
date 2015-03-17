@@ -16,6 +16,10 @@ public class ShopCategory extends com.doodeec.tobycommon.model.ShopCategory impl
         super(name);
     }
 
+    public ShopCategory(String name, int id) {
+        super(name, id);
+    }
+
     public ShopCategory(Cursor cursor) {
         super();
 

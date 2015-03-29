@@ -64,6 +64,13 @@ public class AppData {
         appData.getShoppingLists();
         appData.getShoppingListItems();
 
+        // init observers
+        appData.initInstance();
+
+        return appData;
+    }
+
+    private void initInstance() {
         // set database observers
         /*appData.allShops.addObserver(new Observer() {
             @Override
@@ -76,26 +83,10 @@ public class AppData {
                 database.releaseReference();
             }
         });*/
-        appData.allShoppingLists.addObserver(new Observer() {
+        allShoppingLists.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
-                synchronized (DBHelper.class) {
-                    SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-
-                    try {
-                        for (ShoppingList list : sInstance.allShoppingLists.getData()) {
-                            for (IShoppingListItem item : list.getItems()) {
-                                if (item instanceof ShoppingListItem) {
-                                    sInstance.saveObjectToDB(database, (ShoppingListItem) item);
-                                }
-                            }
-                            sInstance.saveObjectToDB(database, list);
-                        }
-                    } finally {
-                        database.close();
-                        database.releaseReference();
-                    }
-                }
+                saveShoppingLists();
             }
         });
         /*appData.allCategories.addObserver(new Observer() {
@@ -109,8 +100,6 @@ public class AppData {
                 database.releaseReference();
             }
         });*/
-
-        return appData;
     }
 
     // properties
@@ -152,13 +141,11 @@ public class AppData {
                     SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
 
                     try {
-                        for (IShoppingListItem item : ((ShoppingList) observable).getItems()) {
-                            if (item instanceof ShoppingListItem) {
-                                saveObjectToDB(database, (ShoppingListItem) item);
-                            }
-                        }
-                        saveObjectToDB(database, (ShoppingList) observable);
+                        database.beginTransaction();
+                        saveListToDB(database, (ShoppingList) observable);
+                        database.setTransactionSuccessful();
                     } finally {
+                        database.endTransaction();
                         database.close();
                         database.releaseReference();
                     }
@@ -313,21 +300,48 @@ public class AppData {
         return null;
     }
 
+    /**
+     * Saves all shopping lists to the DB
+     */
     private void saveShoppingLists() {
         synchronized (DBHelper.class) {
             SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
 
             try {
-                for (ShoppingList list : sInstance.allShoppingLists.getData()) {
-                    sInstance.saveObjectToDB(database, list);
+                database.beginTransaction();
+                for (ShoppingList list : allShoppingLists.getData()) {
+                    saveObjectToDB(database, list);
                 }
+                database.setTransactionSuccessful();
             } finally {
+                database.endTransaction();
                 database.close();
                 database.releaseReference();
             }
         }
     }
 
+    /**
+     * Saves/Updates every item in the shopping list and then saves/updates shopping list itself
+     *
+     * @param database database instance
+     * @param list     shopping list
+     */
+    private void saveListToDB(SQLiteDatabase database, ShoppingList list) {
+        for (IShoppingListItem item : list.getItems()) {
+            if (item instanceof ShoppingListItem) {
+                saveObjectToDB(database, (ShoppingListItem) item);
+            }
+        }
+        saveObjectToDB(database, list);
+    }
+
+    /**
+     * Saves interface object to the DB
+     *
+     * @param db     database instance
+     * @param object savable interace
+     */
     private void saveObjectToDB(SQLiteDatabase db, IDbSavable object) {
         ContentValues values = object.getValues();
 

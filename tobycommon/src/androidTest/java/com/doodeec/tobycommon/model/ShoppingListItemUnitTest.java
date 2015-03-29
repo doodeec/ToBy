@@ -37,9 +37,9 @@ public class ShoppingListItemUnitTest {
 
     @Test
     public void testGetSetAmount() {
-        assertThat(listItem.getAmount(), is(5));
+        assertThat(listItem.getAmount(), is(5d));
         listItem.setAmount(10);
-        assertThat(listItem.getAmount(), is(10));
+        assertThat(listItem.getAmount(), is(10d));
     }
 
     @Test

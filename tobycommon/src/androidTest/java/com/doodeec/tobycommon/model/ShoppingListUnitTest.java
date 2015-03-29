@@ -3,6 +3,7 @@ package com.doodeec.tobycommon.model;
 import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 
 import org.hamcrest.core.IsNull;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +29,48 @@ public class ShoppingListUnitTest {
         this.list = new ShoppingList("Nakup");
         this.mockItemOne = new IShoppingListItem() {
             @Override
-            public String getName() {
-                return "One";
+            public void setAmount(double amount) {
+
+            }
+
+            @Override
+            public double getAmount() {
+                return 0;
+            }
+
+            @Override
+            public void setUnitType(UnitType type) {
+
+            }
+
+            @Override
+            public UnitType getUnit() {
+                return null;
+            }
+
+            @Override
+            public void setChecked(boolean isChecked) {
+
+            }
+
+            @Override
+            public boolean getChecked() {
+                return false;
+            }
+
+            @Override
+            public JSONObject toJSON() {
+                return null;
+            }
+
+            @Override
+            public int compareTo(IShoppingListItem another) {
+                return 0;
             }
 
             @Override
             public void setId(int id) {
+
             }
 
             @Override
@@ -42,26 +79,14 @@ public class ShoppingListUnitTest {
             }
 
             @Override
-            public void setUnitType(UnitType type) {
-            }
-
-            @Override
-            public UnitType getUnit() {
-                return null;
-            }
-
-            @Override
-            public void setAmount(Integer amount) {
-            }
-
-            @Override
-            public double getAmount() {
-                return 0;
+            public String getName() {
+                return "One";
             }
         };
         this.mockItemTwo = new IShoppingListItem() {
             @Override
-            public void setAmount(Integer amount) {
+            public void setAmount(double amount) {
+
             }
 
             @Override
@@ -71,11 +96,32 @@ public class ShoppingListUnitTest {
 
             @Override
             public void setUnitType(UnitType type) {
+
             }
 
             @Override
             public UnitType getUnit() {
                 return null;
+            }
+
+            @Override
+            public void setChecked(boolean isChecked) {
+
+            }
+
+            @Override
+            public boolean getChecked() {
+                return false;
+            }
+
+            @Override
+            public JSONObject toJSON() {
+                return null;
+            }
+
+            @Override
+            public int compareTo(IShoppingListItem another) {
+                return 0;
             }
 
             @Override
@@ -95,7 +141,7 @@ public class ShoppingListUnitTest {
         };
         this.mockItemThree = new IShoppingListItem() {
             @Override
-            public void setAmount(Integer amount) {
+            public void setAmount(double amount) {
 
             }
 
@@ -112,6 +158,26 @@ public class ShoppingListUnitTest {
             @Override
             public UnitType getUnit() {
                 return null;
+            }
+
+            @Override
+            public void setChecked(boolean isChecked) {
+
+            }
+
+            @Override
+            public boolean getChecked() {
+                return false;
+            }
+
+            @Override
+            public JSONObject toJSON() {
+                return null;
+            }
+
+            @Override
+            public int compareTo(IShoppingListItem another) {
+                return 0;
             }
 
             @Override

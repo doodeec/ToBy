@@ -12,14 +12,12 @@ import butterknife.InjectView;
 /**
  * @author dusan.bartos
  */
-public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
+public class SLViewHolder extends RecyclerView.ViewHolder {
 
     @InjectView(R.id.list_name)
     TextView name;
-    @InjectView(R.id.shop_name)
-    TextView shopName;
 
-    public ShoppingListViewHolder(View view) {
+    public SLViewHolder(View view) {
         super(view);
 
         ButterKnife.inject(this, view);
@@ -27,9 +25,5 @@ public class ShoppingListViewHolder extends RecyclerView.ViewHolder {
 
     public void setName(String name) {
         this.name.setText(name);
-    }
-
-    public void setShopName(String name) {
-        this.shopName.setText(name);
     }
 }

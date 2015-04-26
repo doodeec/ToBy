@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppData;
@@ -20,15 +19,15 @@ import com.getbase.floatingactionbutton.AddFloatingActionButton;
 /**
  * @author dusan.bartos
  */
-public class ShoppingListsListFragment extends Fragment {
+public class SLListFragment extends Fragment implements View.OnClickListener {
 
     public final static String TAG = "ShoppingListsList";
 
-    private ShoppingListsAdapter mAdapter;
+    private SLAdapter mAdapter;
     private TextView mWarningText;
 
-    public static ShoppingListsListFragment newInstance(Bundle extras) {
-        ShoppingListsListFragment fragment = new ShoppingListsListFragment();
+    public static SLListFragment newInstance(Bundle extras) {
+        SLListFragment fragment = new SLListFragment();
         fragment.setArguments(extras);
         return fragment;
     }
@@ -37,21 +36,14 @@ public class ShoppingListsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fab_layout, container, false);
 
-        mAdapter = new ShoppingListsAdapter();
+        mAdapter = new SLAdapter();
         mAdapter.setData(AppData.getInstance().getShoppingLists());
 
         mWarningText = (TextView) rootView.findViewById(R.id.warning);
         checkDataSize();
 
         AddFloatingActionButton fab1 = (AddFloatingActionButton) rootView.findViewById(R.id.floatingButton);
-        fab1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent detailIntent = new Intent(getActivity(), SLDetailActivity.class);
-                detailIntent.putExtra(SLDetailActivity.SHOPPING_LIST_NEW, true);
-                startActivity(detailIntent);
-            }
-        });
+        fab1.setOnClickListener(this);
 
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -66,7 +58,7 @@ public class ShoppingListsListFragment extends Fragment {
 
             @Override
             public void onItemLongClick(View view, int position) {
-                Toast.makeText(getActivity(), "Edit shopping list", Toast.LENGTH_SHORT).show();
+                //do nothing
             }
         }));
 
@@ -77,6 +69,13 @@ public class ShoppingListsListFragment extends Fragment {
     public void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onClick(View v) {
+        Intent detailIntent = new Intent(getActivity(), SLDetailActivity.class);
+        detailIntent.putExtra(SLDetailActivity.SHOPPING_LIST_NEW, true);
+        startActivity(detailIntent);
     }
 
     private void checkDataSize() {

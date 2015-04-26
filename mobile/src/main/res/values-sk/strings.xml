@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_about">O aplikácií</string>
+    <string name="action_complete">Dokonči zoznam</string>
+    <string name="action_edit">Uprav zoznam</string>
+    <string name="action_settings">Nastavenia</string>
+    <string name="dismiss_btn">Zrušiť</string>
+    <string name="item_amount_hint">Množstvo</string>
+    <string name="item_name_hint">Názov položky</string>
+    <string name="item_unit_hint">Merná jednotka</string>
+    <string name="list_name_hint">Názov zoznamu</string>
+    <string name="list_no_name">Zoznam bez názvu vytvorený</string>
+    <string name="no_data">Žiadne dáta nie sú dostupné</string>
+    <string name="save_product_btn">Pridaj položku</string>
+    <string name="title_activity_shopping_list_detail">Detail zoznamu</string>
+    <string name="login_no_sign">Pokračuj bez prihlásenia</string>
+</resources>

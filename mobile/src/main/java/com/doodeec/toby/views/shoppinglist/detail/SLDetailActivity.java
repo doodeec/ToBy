@@ -2,7 +2,7 @@ package com.doodeec.toby.views.shoppinglist.detail;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -11,7 +11,7 @@ import com.doodeec.toby.R;
 /**
  * @author dusan.bartos
  */
-public class SLDetailActivity extends ActionBarActivity {
+public class SLDetailActivity extends AppCompatActivity {
 
     public static final String SHOPPING_LIST_NEW = "slClean";
     public static final String SHOPPING_LIST_ID = "slId";
@@ -23,13 +23,17 @@ public class SLDetailActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_activity);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, SLDetailFragment.newInstance(getIntent().getExtras()),
-                        SLDetailFragment.TAG)
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame, SLDetailFragment.newInstance(getIntent().getExtras()),
+                            SLDetailFragment.TAG)
+                    .commit();
+        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(false);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(false);
+        }
     }
 
     @Override
@@ -53,10 +57,6 @@ public class SLDetailActivity extends ActionBarActivity {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                return true;
-
-            case R.id.action_edit:
-                //TODO edit
                 return true;
 
             case R.id.action_complete:

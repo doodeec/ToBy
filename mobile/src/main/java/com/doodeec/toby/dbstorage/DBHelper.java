@@ -21,8 +21,6 @@ public class DBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(ItemEntryDBEntry.SQL_CREATE_ENTRIES);
         db.execSQL(ListItemDBEntry.SQL_CREATE_ENTRIES);
-        db.execSQL(ShopCategoryDBEntry.SQL_CREATE_ENTRIES);
-        db.execSQL(ShopDBEntry.SQL_CREATE_ENTRIES);
         db.execSQL(ShoppingListDBEntry.SQL_CREATE_ENTRIES);
     }
 

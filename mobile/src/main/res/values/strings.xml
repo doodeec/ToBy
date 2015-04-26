@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ToBy</string>
+    <string name="app_name" translatable="false">ToBy</string>
     <string name="no_data">No data available</string>
 
     <string name="action_edit">Edit list</string>
@@ -9,15 +9,13 @@
     <string name="action_settings">Settings</string>
     <string name="action_about">About</string>
 
+    <string name="login_no_sign">Continue without sign-in</string>
+
     <string name="title_activity_shopping_list_detail">List Detail</string>
 
     <string name="list_name_hint">List name</string>
-    <string name="shop_name_hint">Shop name</string>
-    <string name="shop_hint">Shop</string>
-    <string name="shop_category_hint">Shop category</string>
     <string name="dismiss_btn">Dismiss</string>
     <string name="save_product_btn">Add item</string>
-    <string name="save_shop_btn">Save shop</string>
     <string name="item_name_hint">Item name</string>
     <string name="item_amount_hint">Item amount</string>
     <string name="item_unit_hint">Amount unit</string>

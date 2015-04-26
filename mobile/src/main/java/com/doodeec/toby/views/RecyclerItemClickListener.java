@@ -19,7 +19,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
          * @param view     tapped view
          * @param position item position in the list
          */
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
 
         /**
          * Fires when recycler view receives a long tap event on item
@@ -27,7 +27,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
          * @param view     long tapped view
          * @param position item position in the list
          */
-        public void onItemLongClick(View view, int position);
+        void onItemLongClick(View view, int position);
     }
 
     GestureDetector mGestureDetector;

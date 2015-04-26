@@ -2,8 +2,6 @@ package com.doodeec.tobycommon.model;
 
 import android.util.Log;
 
-import com.doodeec.tobycommon.model.interfaces.IShop;
-import com.doodeec.tobycommon.model.interfaces.IShopCategory;
 import com.doodeec.tobycommon.model.interfaces.IShoppingListItem;
 
 import org.json.JSONArray;
@@ -28,8 +26,6 @@ public class ShoppingList extends Observable {
     protected static final String KEY_ITEMS = "items";
 
     protected Integer id;
-    protected IShopCategory category;
-    protected IShop shop;
     protected String name;
     protected Boolean completed = false;
     protected List<IShoppingListItem> items = new ArrayList<>();
@@ -60,6 +56,10 @@ public class ShoppingList extends Observable {
         items = list.items;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }
@@ -70,30 +70,6 @@ public class ShoppingList extends Observable {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public void setShop(IShop shop) {
-        if (this.shop != shop) {
-            this.shop = shop;
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    public IShop getShop() {
-        return shop;
-    }
-
-    public void setShopCategory(IShopCategory shopCategory) {
-        if (category != shopCategory) {
-            this.category = shopCategory;
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    public IShopCategory getShopCategory() {
-        return category;
     }
     
     public void checkCompletion() {

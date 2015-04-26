@@ -21,7 +21,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/padding"
         android:layout_alignParentBottom="true"
-        android:text="Continue without sign-in"
+        android:text="@string/login_no_sign"
         android:textColor="@color/purple"
         style="?android:attr/buttonBarButtonStyle"/>
 

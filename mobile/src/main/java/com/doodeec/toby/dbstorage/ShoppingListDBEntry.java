@@ -14,8 +14,6 @@ public abstract class ShoppingListDBEntry {
 
     public static final String TABLE_NAME = "shoppingList";
     public static final String COL_name = "name";
-    public static final String COL_categoryId = "catId";
-    public static final String COL_shopId = "shopId";
     public static final String COL_items = "items";
     public static final String COL_completed = "completed";
     public static final String COL_id = "id";
@@ -29,8 +27,6 @@ public abstract class ShoppingListDBEntry {
             "CREATE TABLE " + TABLE_NAME + " (" +
                     COL_id + DBStorageStatic.TYPE_INT + " PRIMARY KEY," +
                     COL_name + DBStorageStatic.TYPE_TEXT + "," +
-                    COL_categoryId + DBStorageStatic.TYPE_INT + "," +
-                    COL_shopId + DBStorageStatic.TYPE_INT + "," +
                     COL_items + DBStorageStatic.TYPE_TEXT + "," +
                     COL_completed + DBStorageStatic.TYPE_INT + "," +
                     COL_completed_date + DBStorageStatic.TYPE_INT + "," +

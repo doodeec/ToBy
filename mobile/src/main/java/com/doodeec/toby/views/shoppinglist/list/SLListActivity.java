@@ -1,23 +1,25 @@
 package com.doodeec.toby.views.shoppinglist.list;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.doodeec.toby.R;
 
-public class ShoppingListListActivity extends ActionBarActivity {
+public class SLListActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.base_activity);
 
-        getSupportFragmentManager().beginTransaction()
-                .add(R.id.frame, ShoppingListsListFragment.newInstance(getIntent().getExtras()),
-                        ShoppingListsListFragment.TAG)
-                .commit();
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .add(R.id.frame, SLListFragment.newInstance(getIntent().getExtras()),
+                            SLListFragment.TAG)
+                    .commit();
+        }
     }
 
     @Override

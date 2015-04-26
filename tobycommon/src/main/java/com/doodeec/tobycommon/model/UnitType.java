@@ -24,7 +24,7 @@ public enum UnitType {
     public String typeKey;
     public int resource;
 
-    private UnitType(String typeKey, int resource) {
+    UnitType(String typeKey, int resource) {
         this.typeKey = typeKey;
         this.resource = resource;
     }

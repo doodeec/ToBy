@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.doodeec.toby.R;
 import com.doodeec.toby.appstate.AppState;
-import com.doodeec.toby.views.shoppinglist.list.ShoppingListListActivity;
+import com.doodeec.toby.views.shoppinglist.list.SLListActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -138,7 +138,7 @@ public class LoginActivity extends FragmentActivity implements GoogleApiClient.C
     }
     
     private void launchApp() {
-        startActivity(new Intent(this, ShoppingListListActivity.class));
+        startActivity(new Intent(this, SLListActivity.class));
         finish();
     }
 

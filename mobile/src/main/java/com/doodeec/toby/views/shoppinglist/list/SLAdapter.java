@@ -15,11 +15,11 @@ import java.util.List;
 /**
  * @author dusan.bartos
  */
-public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewHolder> {
+public class SLAdapter extends RecyclerView.Adapter<SLViewHolder> {
 
     List<ShoppingList> data;
 
-    public ShoppingListsAdapter() {
+    public SLAdapter() {
         data = new ArrayList<>();
     }
 
@@ -40,23 +40,18 @@ public class ShoppingListsAdapter extends RecyclerView.Adapter<ShoppingListViewH
     }
 
     @Override
-    public ShoppingListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SLViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater
                 .from(AppState.getAppContext())
                 .inflate(R.layout.shopping_list_holder, parent, false);
-        return new ShoppingListViewHolder(view);
+        return new SLViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ShoppingListViewHolder holder, int position) {
+    public void onBindViewHolder(SLViewHolder holder, int position) {
         ShoppingList list = data.get(position);
 
         holder.setName(list.getName());
-        if (list.getShop() != null) {
-            holder.setShopName(list.getShop().getName());
-        } else {
-            holder.setShopName(null);
-        }
     }
 
     @Override

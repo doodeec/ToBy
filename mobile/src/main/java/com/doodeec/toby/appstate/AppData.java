@@ -7,12 +7,8 @@ import android.util.Log;
 
 import com.doodeec.toby.dbstorage.DBHelper;
 import com.doodeec.toby.dbstorage.ListItemDBEntry;
-import com.doodeec.toby.dbstorage.ShopCategoryDBEntry;
-import com.doodeec.toby.dbstorage.ShopDBEntry;
 import com.doodeec.toby.dbstorage.ShoppingListDBEntry;
 import com.doodeec.toby.objectmodel.IDbSavable;
-import com.doodeec.toby.objectmodel.Shop;
-import com.doodeec.toby.objectmodel.ShopCategory;
 import com.doodeec.toby.objectmodel.ShoppingList;
 import com.doodeec.toby.objectmodel.ShoppingListItem;
 import com.doodeec.tobycommon.model.BaseObservable;
@@ -41,13 +37,6 @@ public class AppData {
             synchronized (AppData.class) {
                 if (sInstance == null) {
                     sInstance = createInstance();
-
-                    if (!sInstance.hasCategories()) {
-                        sInstance.generateDefaultCategories();
-                    }
-
-                    sInstance.generateDefaultShop();
-//                    instance.generateMockData();
                 }
             }
         }
@@ -59,8 +48,6 @@ public class AppData {
     private static AppData createInstance() {
         AppData appData = new AppData();
 
-//        appData.getShops();
-//        appData.getCategories();
         appData.getShoppingLists();
         appData.getShoppingListItems();
 
@@ -72,57 +59,17 @@ public class AppData {
 
     private void initInstance() {
         // set database observers
-        /*appData.allShops.addObserver(new Observer() {
-            @Override
-            public void update(Observable observable, Object data) {
-                SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                for (Shop shop : instance.allShops.getData()) {
-                    instance.saveObjectToDB(database, shop);
-                }
-                database.close();
-                database.releaseReference();
-            }
-        });*/
         allShoppingLists.addObserver(new Observer() {
             @Override
             public void update(Observable observable, Object data) {
                 saveShoppingLists();
             }
         });
-        /*appData.allCategories.addObserver(new Observer() {
-            @Override
-            public void update(Observable observable, Object data) {
-                SQLiteDatabase database = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                for (ShopCategory category : instance.allCategories.getData()) {
-                    instance.saveObjectToDB(database, category);
-                }
-                database.close();
-                database.releaseReference();
-            }
-        });*/
     }
 
     // properties
-    private BaseObservable<Shop> allShops = new BaseObservable<>();
-    private BaseObservable<ShopCategory> allCategories = new BaseObservable<>();
     private BaseObservable<ShoppingList> allShoppingLists = new BaseObservable<>();
     private BaseObservable<ShoppingListItem> allShoppingListItems = new BaseObservable<>();
-
-    public void setShops(List<Shop> shops) {
-        this.allShops.updateData(shops);
-    }
-
-    public void addShop(Shop shop) {
-        this.allShops.addSingleItem(shop);
-    }
-
-    public void setCategories(List<ShopCategory> categories) {
-        this.allCategories.updateData(categories);
-    }
-
-    public void addCategory(ShopCategory category) {
-        this.allCategories.addSingleItem(category);
-    }
 
     public void setShoppingLists(List<ShoppingList> shoppingLists) {
         for (ShoppingList shoppingList : shoppingLists) {
@@ -160,70 +107,6 @@ public class AppData {
 
     public void addShoppingListItem(ShoppingListItem shoppingListItem) {
         this.allShoppingListItems.addSingleItem(shoppingListItem);
-    }
-
-    public List<Shop> getShops() {
-        if (allShops.getData() == null) {
-            synchronized (DBHelper.class) {
-                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                List<Shop> shops = new ArrayList<>();
-
-                try {
-                    Cursor cursor = db.query(ShopDBEntry.TABLE_NAME, null, null, null, null, null, null);
-                    while (cursor.moveToNext()) {
-                        shops.add(new Shop(cursor));
-                    }
-                    cursor.close();
-                } finally {
-                    db.close();
-                    db.releaseReference();
-                }
-
-                allShops.setData(shops);
-            }
-        }
-
-        return allShops.getData();
-    }
-
-    public List<ShopCategory> getCategories() {
-        if (allCategories.getData() == null) {
-            synchronized (DBHelper.class) {
-                SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-                List<ShopCategory> categories = new ArrayList<>();
-
-                try {
-                    Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
-                    while (cursor.moveToNext()) {
-                        categories.add(new ShopCategory(cursor));
-                    }
-                    cursor.close();
-                } finally {
-                    db.close();
-                    db.releaseReference();
-                }
-
-                allCategories.setData(categories);
-            }
-        }
-
-        return allCategories.getData();
-    }
-
-    public boolean hasCategories() {
-        synchronized (DBHelper.class) {
-            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            boolean result = false;
-            try {
-                Cursor cursor = db.query(ShopCategoryDBEntry.TABLE_NAME, null, null, null, null, null, null);
-                if (cursor.getCount() > 0) result = true;
-                cursor.close();
-            } finally {
-                db.close();
-                db.releaseReference();
-            }
-            return result;
-        }
     }
 
     public List<ShoppingList> getShoppingLists() {
@@ -283,21 +166,6 @@ public class AppData {
             lists.put(list.toJSON());
         }
         return lists;
-    }
-
-    public ShopCategory getCategoryById(int id) {
-        for (ShopCategory category : getCategories()) {
-            if (category.getId() == id) return category;
-        }
-
-        return null;
-    }
-
-    public Shop getShopById(int id) {
-        for (Shop shop : getShops()) {
-            if (shop.getId() == id) return shop;
-        }
-        return null;
     }
 
     /**
@@ -364,39 +232,5 @@ public class AppData {
             }
         }
         c.close();
-    }
-
-    //TODO remove
-    private void generateDefaultShop() {
-        this.allShops.addSingleItem(new Shop("BILLA"));
-    }
-
-    /**
-     * Initializes database entries for default shop categories
-     */
-    private void generateDefaultCategories() {
-        List<ShopCategory> categories = new ArrayList<>();
-        categories.add(new ShopCategory("Potraviny", 1));
-        categories.add(new ShopCategory("Ovocie a zelenina", 2));
-        categories.add(new ShopCategory("Mäsiarstvo", 3));
-        categories.add(new ShopCategory("Domáce potreby", 4));
-        categories.add(new ShopCategory("Darčeky", 5));
-        categories.add(new ShopCategory("Obuv", 6));
-        categories.add(new ShopCategory("Oblečenie", 7));
-        categories.add(new ShopCategory("Šport", 8));
-        categories.add(new ShopCategory("Drogéria", 9));
-        categories.add(new ShopCategory("Nábytok", 10));
-
-        synchronized (DBHelper.class) {
-            SQLiteDatabase db = new DBHelper(AppState.getAppContext()).getReadableDatabase();
-            try {
-                for (ShopCategory cat : categories) {
-                    saveObjectToDB(db, cat);
-                }
-            } finally {
-                db.close();
-                db.releaseReference();
-            }
-        }
     }
 }

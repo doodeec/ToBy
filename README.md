@@ -1,7 +1,7 @@
 # ToBy
 Toby is your wearable shopping assistant, which will always remind you what you should buy.
 
-### Currently in development...
+### DISCONTINUED - Moving repository to private vcs
 
 ### Author
 Dusan Bartos
